@@ -8,8 +8,7 @@ Metal Gear Rising Revengeance Cheat
     
 ## Todo
  - [ ] Add least cheats
- - [ ] Game function calling
- - [ ] Game SDK
+ - [ ] Menu Mouse Hook
   
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
