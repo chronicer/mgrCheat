@@ -1,26 +1,20 @@
 ﻿#include "pch.h"
-// Example for D3D9 hook
 
-// Include required libraries
 #include "kiero.h"
 #include <d3d9.h>
-#include <d3dx9.h>
-#include <Psapi.h>
 
 #include "imgui/imgui.h"
 #include "impl/win32_impl.h"
 #include "imgui/imgui_impl_dx9.h"
 #include "imgui/imgui_impl_win32.h"
 
-#include "injector/injector.hpp"
 #include "gui/gui.h"
 #include "cheat/cheat.h"
 
-HANDLE GameProcess = GetCurrentProcess();
-DWORD base = cheat::GetBaseAddress(GameProcess);
-static HWND window = (HWND)injector::ReadMemory<DWORD>(base + 0x19D504C);
+// HANDLE GameProcess = GetCurrentProcess();
+// DWORD base = cheat::GetBaseAddress(GameProcess);
+// static HWND window = (HWND)injector::ReadMemory<DWORD>(base + 0x19D504C);
 
-// Create the type of function that we will hook
 typedef long(__stdcall* EndScene)(LPDIRECT3DDEVICE9);
 static EndScene oEndScene = NULL;
 
@@ -35,8 +29,6 @@ long __stdcall hkReset(LPDIRECT3DDEVICE9 pDevice, D3DPRESENT_PARAMETERS* pPresen
 
     return result;
 }
-
-// Declare the detour function
 
 bool init = false;
 long __stdcall hkEndScene(LPDIRECT3DDEVICE9 pDevice)

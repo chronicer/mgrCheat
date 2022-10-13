@@ -21,6 +21,11 @@ void gui::RenderGUI() noexcept
 		ImGui::Checkbox("Infinite Fuel Container", &cheat::infiniteFc);
 		ImGui::Checkbox("Infinite Health", &cheat::infiniteHealth);
 		ImGui::Checkbox("One Hit Kill", &cheat::oneHitKill);
+		ImGui::Checkbox("Infinite Subweapon Ammo", &cheat::infiniteSubWeapon);
+		ImGui::Checkbox("No Damage Status for battle", &cheat::noDamageStat);
+		ImGui::Checkbox("Stealth Cheat", &cheat::stealth);
+		ImGui::Checkbox("Height Change (numpad +, -)", &cheat::heightChange);
+		ImGui::SliderFloat("Height Change Rate", &cheat::heightRate, 0.0f, 100.0f, "%.3f", 5.0f);
 		ImGui::End();
 	}
 
