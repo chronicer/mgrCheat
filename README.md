@@ -5,9 +5,13 @@ Metal Gear Rising Revengeance Cheat
     - Infinite Health
     - Infinite Fuel Container
     - One Hit Kill
+    - Infinite subweapon ammo
+    - No Damage Status for battles
+    - Stealth cheat
+    - Height change(numpad +, -, adjustable)
     
 ## Todo
- - [ ] Add least cheats
+ - [x] Add least cheats (almost)
  - [ ] Menu Mouse Hook
   
 ## Contributing
