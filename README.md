@@ -9,6 +9,7 @@ Metal Gear Rising Revengeance Cheat
     - No Damage Status for battles
     - Stealth cheat
     - Height change(numpad +, -, adjustable)
+    - Ground cheat(thanks to sssiyan and hitchhiker)
     
 ## Todo
  - [x] Add least cheats (almost)
