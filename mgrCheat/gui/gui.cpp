@@ -26,6 +26,7 @@ void gui::RenderGUI() noexcept
 		ImGui::Checkbox("Stealth Cheat", &cheat::stealth);
 		ImGui::Checkbox("Height Change (numpad +, -)", &cheat::heightChange);
 		ImGui::SliderFloat("Height Change Rate", &cheat::heightRate, 0.0f, 100.0f, "%.3f", 1.0f);
+		ImGui::Checkbox("Ground Cheat(hotkey K)", &cheat::groundCheat);
 		ImGui::End();
 	}
 

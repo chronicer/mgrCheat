@@ -28,11 +28,10 @@ namespace cheat
 	inline bool stealth = false;
 	inline float heightRate = 0.0f;
 	inline bool heightChange = false;
+	inline bool groundCheat = false;
+	inline bool groundEnabled = false;
 	inline HANDLE GameProcess = GetCurrentProcess();
 
 	DWORD GetBaseAddress(const HANDLE hProcess) noexcept;
-	void OneHitKillCave() noexcept;
-	void InfiniteRocketsCave() noexcept;
-	void InfiniteGrenadeCave() noexcept;
 	void HandleCheats() noexcept;
 }

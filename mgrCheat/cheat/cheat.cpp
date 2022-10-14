@@ -23,8 +23,9 @@ DWORD base1 = cheat::GetBaseAddress(GetCurrentProcess());
 DWORD OneHitKillCaveExit = base1 + 0x68EE3A;
 DWORD InfiniteRocketsCaveExit = base1 + 0x5499F9;
 DWORD InfiniteGrenadeCaveExit = base1 + 0x54D8D6;
+DWORD GroundCheatCaveExit = base1 + 0xE6B464;
 
-void __declspec(naked) cheat::OneHitKillCave() noexcept
+void __declspec(naked) OneHitKillCave() noexcept
 {
 	__asm {
 		mov eax, [ecx+0x870]
@@ -33,7 +34,7 @@ void __declspec(naked) cheat::OneHitKillCave() noexcept
 	}
 }
 
-void __declspec(naked) cheat::InfiniteRocketsCave() noexcept
+void __declspec(naked) InfiniteRocketsCave() noexcept
 {
 	__asm {
 		mov [ecx + 0x68], eax
@@ -44,13 +45,31 @@ void __declspec(naked) cheat::InfiniteRocketsCave() noexcept
 	}
 }
 
-void __declspec(naked) cheat::InfiniteGrenadeCave() noexcept
+void __declspec(naked) InfiniteGrenadeCave() noexcept
 {
 	__asm {
 		mov eax, [ecx + 0x58]
 		mov [ecx + 0x54], eax
 		mov eax, [ecx + 0x54]
 		jmp InfiniteGrenadeCaveExit
+	}
+}
+
+void __declspec(naked) GroundCheatCave()
+{
+	__asm {
+			cmp cheat::groundEnabled, 1
+			je enabled
+			jmp otherwise
+
+			enabled:
+				mov [eax], 2
+				jmp GroundCheatCaveExit
+
+			otherwise:
+				mov [eax], 0
+				jmp GroundCheatCaveExit
+		
 	}
 }
 
@@ -156,5 +175,29 @@ void cheat::HandleCheats() noexcept
 				}
 			}
 		}
+
+		if (groundCheat)
+		{
+			if (GetAsyncKeyState(75) & 1)
+				groundEnabled = !groundEnabled;
+
+			if (groundEnabled)
+			{
+				injector::MakeJMP(base + 0xE6B45E, &GroundCheatCave, true);
+				injector::MakeNOP(base + 0xE6B463, 1, true);
+				injector::MakeNOP(base + 0x4E98CD, 3, true);
+			}
+			else
+			{
+				unsigned char rawBytes[] = { 0xC7, 0x00, 0x00, 0x00, 0x00, 0x00 };
+				unsigned char rawBytes1[] = { 0x89, 0x46, 0x10 };
+
+				injector::WriteMemoryRaw(base + 0xE6B45E, rawBytes, 6, true);
+				injector::WriteMemoryRaw(base + 0x4E98CD, rawBytes1, 3, true);
+			}
+		}
+
+		if (!groundCheat && groundEnabled)
+			groundEnabled = false;
 	}
 }
