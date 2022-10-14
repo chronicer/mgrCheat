@@ -14,6 +14,7 @@ Metal Gear Rising Revengeance Cheat
 ## Todo
  - [x] Add least cheats (almost)
  - [ ] Menu Mouse Hook
+ - [ ] Maybe some config system?
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
