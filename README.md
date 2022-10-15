@@ -15,7 +15,7 @@ To open menu you need to press insert while in game
     
 ## Todo
  - [x] Add least cheats (almost)
- - [ ] Menu Mouse Hook
+ - [ ] Menu Mouse Hook (maybe keep player in pause while setting some cheats?)
  - [x] Maybe some config system? (half of work is done)
  
  ## Compiling
