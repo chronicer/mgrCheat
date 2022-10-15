@@ -30,8 +30,11 @@ namespace cheat
 	inline bool heightChange = false;
 	inline bool groundCheat = false;
 	inline bool groundEnabled = false;
+	inline unsigned int groundCheatHotkey = 75;
 	inline HANDLE GameProcess = GetCurrentProcess();
 
 	DWORD GetBaseAddress(const HANDLE hProcess) noexcept;
 	void HandleCheats() noexcept;
+	void LoadConfig() noexcept;
+	void SaveConfig() noexcept;
 }

@@ -1,5 +1,6 @@
 #include "cheat.h"
 #include "../injector/injector.hpp"
+#include "../IniReader.h"
 
 DWORD cheat::GetBaseAddress(const HANDLE hProcess) noexcept
 {
@@ -73,12 +74,18 @@ void __declspec(naked) GroundCheatCave()
 	}
 }
 
+bool once = false;
 void cheat::HandleCheats() noexcept
 {
 	DWORD base = GetBaseAddress(GetCurrentProcess());
 	GameMenuStatus GameMenuStat = (GameMenuStatus)injector::ReadMemory<unsigned short>(base + 0x17E9F9C);
 	bool OnFocus = injector::ReadMemory<bool>(base + 0x19D509C); // we will process hotkey while ONFOCUS and INGAME state
-	if (GameMenuStat == InGame && OnFocus)
+	if (!once)
+	{
+		LoadConfig();
+		once = true;
+	}
+	if ((GameMenuStat == InGame) && OnFocus)
 	{
 		if (infiniteFc)
 		{
@@ -100,10 +107,10 @@ void cheat::HandleCheats() noexcept
 		}
 		else
 		{
-			unsigned char rawBytes1[] = { 0x29, 0x81, 0x70, 0x08, 0x00, 0x00 };
+			unsigned char rawBytes1[6] = { 0x29, 0x81, 0x70, 0x08, 0x00, 0x00 };
 			injector::WriteMemoryRaw(base + 0x787859, rawBytes1, 6, true);
 
-			unsigned char rawBytes2[] = { 0x29, 0x91, 0x70, 0x08, 0x00, 0x00 };
+			unsigned char rawBytes2[6] = { 0x29, 0x91, 0x70, 0x08, 0x00, 0x00 };
 			injector::WriteMemoryRaw(base + 0x787865, rawBytes2, 6, true);
 		}
 
@@ -114,7 +121,7 @@ void cheat::HandleCheats() noexcept
 		}
 		else
 		{
-			unsigned char rawBytes[] = { 0x29, 0x81, 0x70, 0x08, 0x00, 0x00 };
+			unsigned char rawBytes[6] = { 0x29, 0x81, 0x70, 0x08, 0x00, 0x00 };
 			injector::WriteMemoryRaw(base + 0x68EE34, rawBytes, 6, true);
 		}
 
@@ -128,8 +135,8 @@ void cheat::HandleCheats() noexcept
 		}
 		else
 		{
-			unsigned char rocketArray[] = { 0x89, 0x41, 0x68, 0x89, 0x51, 0x5C };
-			unsigned char grenadeArray[] = { 0xFF, 0x49, 0x54, 0x8B, 0x41, 0x54 };
+			unsigned char rocketArray[6] = { 0x89, 0x41, 0x68, 0x89, 0x51, 0x5C };
+			unsigned char grenadeArray[6] = { 0xFF, 0x49, 0x54, 0x8B, 0x41, 0x54 };
 
 			injector::WriteMemoryRaw(base + 0x5499F3, rocketArray, 6, true);
 			injector::WriteMemoryRaw(base + 0x54D8D0, grenadeArray, 6, true);
@@ -137,23 +144,23 @@ void cheat::HandleCheats() noexcept
 
 		if (noDamageStat)
 		{
-			unsigned char patched[] = { 0xB8, 0x00 };
+			unsigned char patched[2] = { 0xB8, 0x00 };
 			injector::WriteMemoryRaw(base + 0x81B481, patched, 2, true);
 		}
 		else
 		{
-			unsigned char original[] = { 0xB8, 0x01 };
+			unsigned char original[2] = { 0xB8, 0x01 };
 			injector::WriteMemoryRaw(base + 0x81B481, original, 2, true);
 		}
 
 		if (stealth)
 		{
-			unsigned char patched[] = { 0xEB, 0x19 };
+			unsigned char patched[2] = { 0xEB, 0x19 };
 			injector::WriteMemoryRaw(base + 0x849286, patched, 2, true);
 		}
 		else
 		{
-			unsigned char original[] = { 0x74, 0x19 };
+			unsigned char original[2] = { 0x74, 0x19 };
 			injector::WriteMemoryRaw(base + 0x849286, original, 2, true);
 		}
 
@@ -178,7 +185,7 @@ void cheat::HandleCheats() noexcept
 
 		if (groundCheat)
 		{
-			if (GetAsyncKeyState(75) & 1)
+			if (GetAsyncKeyState(groundCheatHotkey) & 1)
 				groundEnabled = !groundEnabled;
 
 			if (groundEnabled)
@@ -189,8 +196,8 @@ void cheat::HandleCheats() noexcept
 			}
 			else
 			{
-				unsigned char rawBytes[] = { 0xC7, 0x00, 0x00, 0x00, 0x00, 0x00 };
-				unsigned char rawBytes1[] = { 0x89, 0x46, 0x10 };
+				unsigned char rawBytes[6] = { 0xC7, 0x00, 0x00, 0x00, 0x00, 0x00 };
+				unsigned char rawBytes1[3] = { 0x89, 0x46, 0x10 };
 
 				injector::WriteMemoryRaw(base + 0xE6B45E, rawBytes, 6, true);
 				injector::WriteMemoryRaw(base + 0x4E98CD, rawBytes1, 3, true);
@@ -200,4 +207,41 @@ void cheat::HandleCheats() noexcept
 		if (!groundCheat && groundEnabled)
 			groundEnabled = false;
 	}
+}
+
+void cheat::LoadConfig() noexcept
+{
+	CIniReader iniReader("CheatMenu.ini");
+
+	infiniteFc = iniReader.ReadInteger("Player", "InfFuelContainer", 0) == 1;
+	infiniteHealth = iniReader.ReadInteger("Player", "InfHealth", 0) == 1;
+	infiniteSubWeapon = iniReader.ReadInteger("Player", "InfSubWeapon", 0) == 1;
+	heightChange = iniReader.ReadInteger("Player", "HeightChange", 0) == 1;
+	heightRate = iniReader.ReadFloat("Player", "HeightRate", 0.0f);
+
+	groundCheat = iniReader.ReadInteger("Entities", "GroundCheatEnabled", 0) == 1;
+	groundCheatHotkey = iniReader.ReadInteger("Entities", "GroundCheatHotkey", 75);
+
+	oneHitKill = iniReader.ReadInteger("Enemies", "OneHitKill", 0) == 1;
+
+	noDamageStat = iniReader.ReadInteger("Battle", "NoDamageStat", 0) == 1;
+	stealth = iniReader.ReadInteger("Battle", "Stealth", 0) == 1;
+}
+
+void cheat::SaveConfig() noexcept
+{
+	CIniReader iniReader("CheatMenu.ini");
+
+	iniReader.WriteInteger("Player", "InfFuelContainer", infiniteFc);
+	iniReader.WriteInteger("Player", "InfHealth", infiniteHealth);
+	iniReader.WriteInteger("Player", "InfSubWeapon", infiniteSubWeapon);
+	iniReader.WriteInteger("Player", "HeightChange", heightChange);
+	iniReader.WriteFloat("Player", "HeightRate", heightRate);
+
+	iniReader.WriteInteger("Entities", "GroundCheatEnabled", groundCheat);
+
+	iniReader.WriteInteger("Enemies", "OneHitKill", oneHitKill);
+
+	iniReader.WriteInteger("Battle", "NoDamageStat", noDamageStat);
+	iniReader.WriteInteger("Battle", "Stealth", stealth);
 }
