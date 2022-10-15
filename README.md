@@ -11,6 +11,8 @@ Metal Gear Rising Revengeance Cheat
     - Height change(numpad +, -, adjustable)
     - Ground cheat(thanks to sssiyan and hitchhiker)
     
+To open menu you need to press insert while in game
+    
 ## Todo
  - [x] Add least cheats (almost)
  - [ ] Menu Mouse Hook
