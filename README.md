@@ -15,6 +15,9 @@ Metal Gear Rising Revengeance Cheat
  - [x] Add least cheats (almost)
  - [ ] Menu Mouse Hook
  - [ ] Maybe some config system?
+ 
+ ## Compiling
+ Compile in debug mode, since release doesn't work
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
