@@ -17,6 +17,7 @@ To open menu you need to press insert while in game
  - [x] Add least cheats (almost)
  - [ ] Menu Mouse Hook (maybe keep player in pause while setting some cheats?)
  - [x] Maybe some config system? (half of work is done)
+ - [x] Bind system (re-bind keys, allowed only one key per bind)
  
  ## Compiling
  Compile in debug mode, since release doesn't work
