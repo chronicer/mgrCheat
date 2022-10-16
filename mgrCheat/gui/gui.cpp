@@ -4,6 +4,7 @@
 #include "../cheat/cheat.h"
 #include "../IniReader.h"
 #include "../KeyBinds.h"
+#include "../KeyBind.h"
 
 #include "../imgui/imgui.h"
 #include "../imgui/imgui_impl_win32.h"
@@ -31,6 +32,9 @@ void gui::RenderGUI() noexcept
 	{
 		ImGui::Begin("Cheat Menu", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);
 		ImGui::SetWindowSize({width, height});
+		ImGuiIO io = ImGui::GetIO();
+		io.MouseDrawCursor = true;
+		io.ConfigFlags |= ImGuiConfigFlags_NoMouseCursorChange;
 		if (ImGui::BeginTabBar("NOTITLE", ImGuiTabBarFlags_NoTooltip))
 		{
 			if (ImGui::BeginTabItem("Player"))
@@ -44,9 +48,9 @@ void gui::RenderGUI() noexcept
 			}
 			if (ImGui::BeginTabItem("Entities"))
 			{
-				char buffer[40];
-				sprintf(buffer, "Ground Cheat(hotkey %s)", KeyNames[cheat::groundCheatHotkey]);
-				ImGui::Checkbox(buffer, &cheat::groundCheat);
+				ImGui::Checkbox("Ground Cheat: ", &cheat::groundCheat);
+				ImGui::SameLine();
+				KeyBind::Hotkey(&cheat::groundCheatHotkey);
 				ImGui::EndTabItem();
 			}
 			if (ImGui::BeginTabItem("Enemies"))
@@ -66,7 +70,16 @@ void gui::RenderGUI() noexcept
 				{
 					cheat::SaveConfig();
 					SaveConfig();
-				} // ALSO IMPLEMENT BIND SYSTEM ??? (XD)
+				}
+				if (ImGui::Button("Load Config"))
+				{
+					cheat::LoadConfig();
+					LoadConfig();
+				}
+
+				ImGui::Text("Menu Key Open: ");
+				ImGui::SameLine();
+				KeyBind::Hotkey(&menuKey);
 				ImGui::EndTabItem();
 			}
 			ImGui::EndTabBar();
@@ -81,7 +94,9 @@ void gui::RenderGUI() noexcept
 
 void gui::SaveConfig() noexcept
 {
-	;
+	CIniReader iniReader("CheatMenu.ini");
+
+	iniReader.WriteInteger("Menu", "OpenMenuHotkey", menuKey);
 }
 
 void gui::LoadConfig() noexcept

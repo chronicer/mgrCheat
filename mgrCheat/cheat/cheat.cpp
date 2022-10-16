@@ -239,6 +239,7 @@ void cheat::SaveConfig() noexcept
 	iniReader.WriteFloat("Player", "HeightRate", heightRate);
 
 	iniReader.WriteInteger("Entities", "GroundCheatEnabled", groundCheat);
+	iniReader.WriteInteger("Entities", "GroundCheatHotkey", groundCheatHotkey);
 
 	iniReader.WriteInteger("Enemies", "OneHitKill", oneHitKill);
 
