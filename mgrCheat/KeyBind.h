@@ -3,5 +3,5 @@
 
 namespace KeyBind
 {
-	void Hotkey(unsigned int* k) noexcept;
+	void Hotkey(const char* label, unsigned int* k) noexcept;
 };

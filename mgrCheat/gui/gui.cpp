@@ -48,9 +48,9 @@ void gui::RenderGUI() noexcept
 			}
 			if (ImGui::BeginTabItem("Entities"))
 			{
-				ImGui::Checkbox("Ground Cheat: ", &cheat::groundCheat);
-				ImGui::SameLine();
-				KeyBind::Hotkey(&cheat::groundCheatHotkey);
+				ImGui::Checkbox("Ground Cheat", &cheat::groundCheat);
+				if (cheat::groundCheat)
+					KeyBind::Hotkey("Hotkey: ", &cheat::groundCheatHotkey);
 				ImGui::EndTabItem();
 			}
 			if (ImGui::BeginTabItem("Enemies"))
@@ -66,6 +66,7 @@ void gui::RenderGUI() noexcept
 			}
 			if (ImGui::BeginTabItem("Menu"))
 			{
+				KeyBind::Hotkey("Menu Key: ", &menuKey);
 				if (ImGui::Button("Save Config"))
 				{
 					cheat::SaveConfig();
@@ -76,10 +77,6 @@ void gui::RenderGUI() noexcept
 					cheat::LoadConfig();
 					LoadConfig();
 				}
-
-				ImGui::Text("Menu Key Open: ");
-				ImGui::SameLine();
-				KeyBind::Hotkey(&menuKey);
 				ImGui::EndTabItem();
 			}
 			ImGui::EndTabBar();

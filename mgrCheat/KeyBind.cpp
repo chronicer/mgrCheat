@@ -2,9 +2,11 @@
 #include "imgui/imgui.h"
 #include "KeyBind.h"
 
-void KeyBind::Hotkey(unsigned int* k) noexcept
+void KeyBind::Hotkey(const char* label, unsigned int* k) noexcept
 {
 	static bool waitingforkey = false;
+	ImGui::TextUnformatted(label);
+	ImGui::SameLine();
 	if (waitingforkey == false) {
 		if (ImGui::Button(KeyNames[*k]))
 			waitingforkey = true;
@@ -19,13 +21,15 @@ void KeyBind::Hotkey(unsigned int* k) noexcept
 
 			if (GetAsyncKeyState(VK_ESCAPE))
 			{
+				*k = KeyCodes[0];
 				waitingforkey = false;
 				break;
 			}
 
-			if (GetAsyncKeyState(Key) & 1) {
+			if (ImGui::IsKeyPressed(Key)) {
 				*k = Key;
 				waitingforkey = false;
+				break;
 			}
 		}
 	}
