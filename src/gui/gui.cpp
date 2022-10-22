@@ -2,6 +2,7 @@
 #include <Windows.h>
 #include <string>
 #include "../cheat/cheat.h"
+#include "../injector/injector.hpp"
 #include "../IniReader.h"
 #include "../KeyBinds.h"
 #include "../KeyBind.h"
@@ -15,13 +16,17 @@
 bool once1 = false;
 void gui::RenderGUI() noexcept
 {
+	DWORD base = cheat::GetBaseAddress(GetCurrentProcess());
+	GameMenuStatus GameMenuStat = (GameMenuStatus)injector::ReadMemory<unsigned short>(base + 0x17E9F9C);
+	bool OnFocus = injector::ReadMemory<bool>(base + 0x19D509C);
+
 	if (!once1)
 	{
 		LoadConfig();
 		once1 = true;
 	}
 
-	if (GetAsyncKeyState(menuKey) & 1)
+	if ((GetAsyncKeyState(menuKey) & 1) && OnFocus)
 		show = !show;
 
 	ImGui_ImplDX9_NewFrame();
@@ -44,6 +49,7 @@ void gui::RenderGUI() noexcept
 				ImGui::Checkbox("Infinite Subweapon Ammo", &cheat::infiniteSubWeapon);
 				ImGui::Checkbox("Height Change (numpad +, -)", &cheat::heightChange);
 				ImGui::SliderFloat("Height Change Rate", &cheat::heightRate, 0.0f, 100.0f, "%.3f", 1.0f);
+				KeyBind::Hotkey("Visor Hotkey: ", &cheat::temporaryVisorHotkey);
 				ImGui::EndTabItem();
 			}
 			if (ImGui::BeginTabItem("Entities"))

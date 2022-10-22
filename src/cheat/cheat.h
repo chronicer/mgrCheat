@@ -31,6 +31,8 @@ namespace cheat
 	inline bool groundCheat = false;
 	inline bool groundEnabled = false;
 	inline unsigned int groundCheatHotkey = 75;
+	inline unsigned int temporaryVisorHotkey = 80;
+	inline bool visorSwitch = false;
 	inline HANDLE GameProcess = GetCurrentProcess();
 
 	DWORD GetBaseAddress(const HANDLE hProcess) noexcept;

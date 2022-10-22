@@ -206,6 +206,22 @@ void cheat::HandleCheats() noexcept
 
 		if (!groundCheat && groundEnabled)
 			groundEnabled = false;
+
+		if (true) // I don't want to make variable in global function, so it won't mess up the other things
+		{
+			if (GetAsyncKeyState(temporaryVisorHotkey) & 1)
+				visorSwitch = !visorSwitch;
+			else if (temporaryVisorHotkey == 0x0) // if its off then try to make it permanent
+				visorSwitch = true;
+
+			unsigned int flags = injector::ReadMemory<unsigned int>(base + 0x17EA094);
+			if (visorSwitch)
+				flags |= (1 << 6);
+			else
+				flags &= ~(1 << 6);
+
+			injector::WriteMemory<unsigned int>(base + 0x17EA094, flags);
+		}
 	}
 }
 
@@ -218,6 +234,7 @@ void cheat::LoadConfig() noexcept
 	infiniteSubWeapon = iniReader.ReadInteger("Player", "InfSubWeapon", 0) == 1;
 	heightChange = iniReader.ReadInteger("Player", "HeightChange", 0) == 1;
 	heightRate = iniReader.ReadFloat("Player", "HeightRate", 0.0f);
+	temporaryVisorHotkey = iniReader.ReadInteger("Player", "VisorHotkey", 80);
 
 	groundCheat = iniReader.ReadInteger("Entities", "GroundCheatEnabled", 0) == 1;
 	groundCheatHotkey = iniReader.ReadInteger("Entities", "GroundCheatHotkey", 75);
@@ -237,6 +254,7 @@ void cheat::SaveConfig() noexcept
 	iniReader.WriteInteger("Player", "InfSubWeapon", infiniteSubWeapon);
 	iniReader.WriteInteger("Player", "HeightChange", heightChange);
 	iniReader.WriteFloat("Player", "HeightRate", heightRate);
+	iniReader.WriteInteger("Player", "VisorHotkey", temporaryVisorHotkey);
 
 	iniReader.WriteInteger("Entities", "GroundCheatEnabled", groundCheat);
 	iniReader.WriteInteger("Entities", "GroundCheatHotkey", groundCheatHotkey);
