@@ -2,22 +2,6 @@
 #include <Windows.h>
 #include <Psapi.h>
 
-enum GameMenuStatus : unsigned short
-{
-	InMenu = 0,
-	InGame,
-	ProcessPause,
-	PauseMenu,
-	Codec,
-	StateDisallowPause,
-	CutscenePause,
-	VRFail,
-	MissionFail,
-	SelectWeaponMenu,
-	GraphicsSettings,
-	AttackHelpScreen
-};
-
 namespace cheat
 {
 	inline bool infiniteFc = false;
@@ -33,6 +17,7 @@ namespace cheat
 	inline unsigned int groundCheatHotkey = 75;
 	inline unsigned int temporaryVisorHotkey = 80;
 	inline bool visorSwitch = false;
+	inline bool autoHpUp = false;
 	inline HANDLE GameProcess = GetCurrentProcess();
 
 	DWORD GetBaseAddress(const HANDLE hProcess) noexcept;

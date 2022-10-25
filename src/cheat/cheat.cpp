@@ -1,6 +1,8 @@
 #include "cheat.h"
 #include "../injector/injector.hpp"
 #include "../IniReader.h"
+#include "../enums.h"
+#include "../KeyBind.h"
 
 DWORD cheat::GetBaseAddress(const HANDLE hProcess) noexcept
 {
@@ -78,7 +80,7 @@ bool once = false;
 void cheat::HandleCheats() noexcept
 {
 	DWORD base = GetBaseAddress(GetCurrentProcess());
-	GameMenuStatus GameMenuStat = (GameMenuStatus)injector::ReadMemory<unsigned short>(base + 0x17E9F9C);
+	GameMenuStatus GameMenuStat = (GameMenuStatus)injector::ReadMemory<unsigned int>(base + 0x17E9F9C);
 	bool OnFocus = injector::ReadMemory<bool>(base + 0x19D509C); // we will process hotkey while ONFOCUS and INGAME state
 	if (!once)
 	{
@@ -89,15 +91,15 @@ void cheat::HandleCheats() noexcept
 	{
 		if (infiniteFc)
 		{
-			unsigned int flags = injector::ReadMemory<unsigned int>(base + 0x17EA090);
-			flags |= (1 << 1);
-			injector::WriteMemory<unsigned int>(base + 0x17EA090, flags);
+			unsigned int GameplayFlags = (GameFlags)injector::ReadMemory<unsigned int>(base + 0x17EA090);
+			GameplayFlags |= MugenZangeki;
+			injector::WriteMemory<unsigned int>(base + 0x17EA090, GameplayFlags);
 		}
 		else
 		{
-			unsigned int flags = injector::ReadMemory<unsigned int>(base + 0x17EA090);
-			flags &= ~(1 << 1);
-			injector::WriteMemory<unsigned int>(base + 0x17EA090, flags);
+			unsigned int GameplayFlags = (GameFlags)injector::ReadMemory<unsigned int>(base + 0x17EA090);
+			GameplayFlags &= ~MugenZangeki;
+			injector::WriteMemory<unsigned int>(base + 0x17EA090, GameplayFlags);
 		}
 
 		if (infiniteHealth)
@@ -185,7 +187,7 @@ void cheat::HandleCheats() noexcept
 
 		if (groundCheat)
 		{
-			if (GetAsyncKeyState(groundCheatHotkey) & 1)
+			if (KeyBind::IsKeyPressed(groundCheatHotkey))
 				groundEnabled = !groundEnabled;
 
 			if (groundEnabled)
@@ -209,10 +211,8 @@ void cheat::HandleCheats() noexcept
 
 		if (true) // I don't want to make variable in global function, so it won't mess up the other things
 		{
-			if (GetAsyncKeyState(temporaryVisorHotkey) & 1)
+			if (KeyBind::IsKeyPressed(temporaryVisorHotkey))
 				visorSwitch = !visorSwitch;
-			else if (temporaryVisorHotkey == 0x0) // if its off then try to make it permanent
-				visorSwitch = true;
 
 			unsigned int flags = injector::ReadMemory<unsigned int>(base + 0x17EA094);
 			if (visorSwitch)
@@ -221,6 +221,19 @@ void cheat::HandleCheats() noexcept
 				flags &= ~(1 << 6);
 
 			injector::WriteMemory<unsigned int>(base + 0x17EA094, flags);
+		}
+
+		if (autoHpUp)
+		{
+			unsigned int GameplayFlags = (GameFlags)injector::ReadMemory<unsigned int>(base + 0x17EA090);
+			GameplayFlags |= AutoHPUp;
+			injector::WriteMemory<unsigned int>(base + 0x17EA090, GameplayFlags);
+		}
+		else
+		{
+			unsigned int GameplayFlags = (GameFlags)injector::ReadMemory<unsigned int>(base + 0x17EA090);
+			GameplayFlags &= ~AutoHPUp;
+			injector::WriteMemory<unsigned int>(base + 0x17EA090, GameplayFlags);
 		}
 	}
 }
@@ -235,6 +248,7 @@ void cheat::LoadConfig() noexcept
 	heightChange = iniReader.ReadInteger("Player", "HeightChange", 0) == 1;
 	heightRate = iniReader.ReadFloat("Player", "HeightRate", 0.0f);
 	temporaryVisorHotkey = iniReader.ReadInteger("Player", "VisorHotkey", 80);
+	autoHpUp = iniReader.ReadInteger("Player", "AutoHpUp", 0) == 1; 
 
 	groundCheat = iniReader.ReadInteger("Entities", "GroundCheatEnabled", 0) == 1;
 	groundCheatHotkey = iniReader.ReadInteger("Entities", "GroundCheatHotkey", 75);
@@ -255,6 +269,7 @@ void cheat::SaveConfig() noexcept
 	iniReader.WriteInteger("Player", "HeightChange", heightChange);
 	iniReader.WriteFloat("Player", "HeightRate", heightRate);
 	iniReader.WriteInteger("Player", "VisorHotkey", temporaryVisorHotkey);
+	iniReader.WriteInteger("Player", "AutoHpUp", autoHpUp);
 
 	iniReader.WriteInteger("Entities", "GroundCheatEnabled", groundCheat);
 	iniReader.WriteInteger("Entities", "GroundCheatHotkey", groundCheatHotkey);
