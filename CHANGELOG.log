@@ -1,0 +1,5 @@
+0.1: Release
+0.11: Added infinite subweapon, no damage status, steath cheat, height change (for those who can't reach the border by theirselfs)
+0.12: Added Ground Cheat
+0.13: Config system so you don't need to enable some cheats on load, bind system (re-binding keys), tabs system so you don't need to allocate some cheats in one tab
+0.14: Renamed mgrCheat folder to src, added visor hotkey, auto hp up(regeneration in other words)
