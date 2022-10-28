@@ -11,7 +11,7 @@ Metal Gear Rising Revengeance Cheat
     - Height change(numpad +, -, adjustable)
     - Ground cheat(thanks to sssiyan and hitchhiker)
     - Visor hotkey
-    - Auto hp up(i.o.e regneration)
+    - Auto hp up(i.e regneration)
     
 To open menu you need to press insert while in game
     
