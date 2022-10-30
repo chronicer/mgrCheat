@@ -1,4 +1,4 @@
-# mgrCheat
+# MGR Cheat Menu
 Metal Gear Rising Revengeance Cheat
 
 - Current Features
