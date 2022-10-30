@@ -4,6 +4,10 @@
 #include "../enums.h"
 #include "../KeyBind.h"
 
+/* TODO #
+*  Make functions for each cheat instead (since return will cancel the handle cheats instead of if condition  
+*/
+
 DWORD cheat::GetBaseAddress(const HANDLE hProcess) noexcept
 {
 	if (hProcess == NULL)
@@ -27,6 +31,8 @@ DWORD OneHitKillCaveExit = base1 + 0x68EE3A;
 DWORD InfiniteRocketsCaveExit = base1 + 0x5499F9;
 DWORD InfiniteGrenadeCaveExit = base1 + 0x54D8D6;
 DWORD GroundCheatCaveExit = base1 + 0xE6B464;
+
+GameMenuStatus GameMenuStat = (GameMenuStatus)injector::ReadMemory<unsigned int>(cheat::base + 0x17E9F9C);
 
 void __declspec(naked) OneHitKillCave() noexcept
 {
@@ -76,166 +82,193 @@ void __declspec(naked) GroundCheatCave()
 	}
 }
 
+void cheat::MugenZangekiCheat() noexcept
+{
+	if (infiniteFc)
+	{
+		unsigned int GameplayFlags = (GameFlags)injector::ReadMemory<unsigned int>(base + 0x17EA090);
+		GameplayFlags |= MugenZangeki;
+		injector::WriteMemory<unsigned int>(base + 0x17EA090, GameplayFlags);
+	}
+	else
+	{
+		unsigned int GameplayFlags = (GameFlags)injector::ReadMemory<unsigned int>(base + 0x17EA090);
+		GameplayFlags &= ~MugenZangeki;
+		injector::WriteMemory<unsigned int>(base + 0x17EA090, GameplayFlags);
+	}
+}
+
+void cheat::InfiniteHealthCheat() noexcept
+{
+	if (infiniteHealth) // its just patches the game, but doesn't write the value into
+	{
+		injector::MakeNOP(base + 0x787859, 6, true);
+		injector::MakeNOP(base + 0x787865, 6, true);
+	}
+	else
+	{
+		unsigned char rawBytes1[6] = { 0x29, 0x81, 0x70, 0x08, 0x00, 0x00 };
+		injector::WriteMemoryRaw(base + 0x787859, rawBytes1, 6, true);
+
+		unsigned char rawBytes2[6] = { 0x29, 0x91, 0x70, 0x08, 0x00, 0x00 };
+		injector::WriteMemoryRaw(base + 0x787865, rawBytes2, 6, true);
+	}
+}
+
+void cheat::OneHitKillCheat() noexcept
+{
+	if (oneHitKill)
+	{
+		injector::MakeJMP(base + 0x68EE34, &OneHitKillCave, true); // 29 81 70 08 00 00
+		injector::MakeNOP(base + 0x68EE39, 1, true);
+	}
+	else
+	{
+		unsigned char rawBytes[6] = { 0x29, 0x81, 0x70, 0x08, 0x00, 0x00 };
+		injector::WriteMemoryRaw(base + 0x68EE34, rawBytes, 6, true);
+	}
+}
+
+void cheat::InfiniteSubWeaponCheat() noexcept
+{
+	if (infiniteSubWeapon)
+	{
+		injector::MakeJMP(base + 0x5499F3, &InfiniteRocketsCave, true);
+		injector::MakeNOP(base + 0x5499F8, 1, true);
+
+		injector::MakeJMP(base + 0x54D8D0, &InfiniteGrenadeCave, true);
+		injector::MakeNOP(base + 0x54D8D5, 1, true);
+	}
+	else
+	{
+		unsigned char rocketArray[6] = { 0x89, 0x41, 0x68, 0x89, 0x51, 0x5C };
+		unsigned char grenadeArray[6] = { 0xFF, 0x49, 0x54, 0x8B, 0x41, 0x54 };
+
+		injector::WriteMemoryRaw(base + 0x5499F3, rocketArray, 6, true);
+		injector::WriteMemoryRaw(base + 0x54D8D0, grenadeArray, 6, true);
+	}
+}
+
+void cheat::NoDamageStatCheat() noexcept
+{
+	unsigned char raw[1] = { 0x01 };
+	unsigned char patched[1] = { 0x00 };
+	injector::WriteMemoryRaw(base + 0x81B482, noDamageStat ? patched : raw, 1, true);
+}
+
+void cheat::StealthCheat() noexcept
+{
+	unsigned char patched[2] = { 0xEB, 0x19 };
+	unsigned char original[2] = { 0x74, 0x19 };
+	injector::WriteMemoryRaw(base + 0x849286, stealth ? patched : original, 2, true);
+}
+
+void cheat::HeightChangeCheat() noexcept
+{
+	if (GameMenuStat != InGame || !OnFocus)
+		return;
+
+	if (heightChange)
+	{
+		DWORD player = injector::ReadMemory<DWORD>(base + 0x19C1490);
+		if (player && player > 0x4000)
+		{
+			float height = injector::ReadMemory<float>(player + 0x54);
+			if (GetAsyncKeyState(VK_ADD) & 1)
+			{
+				height += heightRate;
+				injector::WriteMemory<float>(player + 0x54, height);
+			}
+			else if (GetAsyncKeyState(VK_SUBTRACT) & 1)
+			{
+				height -= heightRate;
+				injector::WriteMemory<float>(player + 0x54, height);
+			}
+		}
+	}
+}
+
+void cheat::GroundCheat() noexcept
+{
+	if (groundCheat)
+	{
+		if (KeyBind::IsKeyPressed(groundCheatHotkey) && GameMenuStat == InGame && OnFocus)
+			groundEnabled = !groundEnabled;
+
+		injector::MakeJMP(base + 0xE6B45E, &GroundCheatCave, true);
+		injector::MakeNOP(base + 0xE6B463, 1, true);
+		injector::MakeNOP(base + 0x4E98CD, 3, true);
+	}
+	else
+	{
+		unsigned char rawBytes[6] = { 0xC7, 0x00, 0x00, 0x00, 0x00, 0x00 };
+		unsigned char rawBytes1[3] = { 0x89, 0x46, 0x10 };
+
+		injector::WriteMemoryRaw(base + 0xE6B45E, rawBytes, 6, true);
+		injector::WriteMemoryRaw(base + 0x4E98CD, rawBytes1, 3, true);
+	}
+}
+
+void cheat::TemporaryVisorCheat() noexcept
+{
+	if (KeyBind::IsKeyPressed(temporaryVisorHotkey) && OnFocus)
+	{
+		visorSwitch = !visorSwitch;
+
+		unsigned int flags = injector::ReadMemory<unsigned int>(base + 0x17EA094);
+		if (visorSwitch)
+			flags |= (1 << 6);
+		else
+			flags &= ~(1 << 6);
+
+		injector::WriteMemory<unsigned int>(base + 0x17EA094, flags);
+	}
+}
+
+void cheat::AutoHPUpCheat() noexcept
+{
+	if (autoHpUp)
+	{
+		unsigned int GameplayFlags = (GameFlags)injector::ReadMemory<unsigned int>(base + 0x17EA090);
+		GameplayFlags |= AutoHPUp;
+		injector::WriteMemory<unsigned int>(base + 0x17EA090, GameplayFlags);
+	}
+	else
+	{
+		unsigned int GameplayFlags = (GameFlags)injector::ReadMemory<unsigned int>(base + 0x17EA090);
+		GameplayFlags &= ~AutoHPUp;
+		injector::WriteMemory<unsigned int>(base + 0x17EA090, GameplayFlags);
+	}
+}
+
 bool once = false;
 void cheat::HandleCheats() noexcept
 {
-	DWORD base = GetBaseAddress(GetCurrentProcess());
-	GameMenuStatus GameMenuStat = (GameMenuStatus)injector::ReadMemory<unsigned int>(base + 0x17E9F9C);
-	bool OnFocus = injector::ReadMemory<bool>(base + 0x19D509C); // we will process hotkey while ONFOCUS and INGAME state
+	base = GetBaseAddress(GetCurrentProcess());
+	GameMenuStat = (GameMenuStatus)injector::ReadMemory<unsigned int>(base + 0x17E9F9C);
+	OnFocus = injector::ReadMemory<bool>(base + 0x19D509C); // we will process hotkey while ONFOCUS and INGAME state
 	if (!once)
 	{
 		LoadConfig();
 		once = true;
 	}
-	if ((GameMenuStat == InGame) && OnFocus)
-	{
-		if (infiniteFc)
-		{
-			unsigned int GameplayFlags = (GameFlags)injector::ReadMemory<unsigned int>(base + 0x17EA090);
-			GameplayFlags |= MugenZangeki;
-			injector::WriteMemory<unsigned int>(base + 0x17EA090, GameplayFlags);
-		}
-		else
-		{
-			unsigned int GameplayFlags = (GameFlags)injector::ReadMemory<unsigned int>(base + 0x17EA090);
-			GameplayFlags &= ~MugenZangeki;
-			injector::WriteMemory<unsigned int>(base + 0x17EA090, GameplayFlags);
-		}
+	// Player
+	MugenZangekiCheat();
+	InfiniteHealthCheat();
+	InfiniteSubWeaponCheat();
+	HeightChangeCheat();
+	TemporaryVisorCheat();
+	AutoHPUpCheat();
 
-		if (infiniteHealth)
-		{
-			injector::MakeNOP(base + 0x787859, 6, true);
-			injector::MakeNOP(base + 0x787865, 6, true);
-		}
-		else
-		{
-			unsigned char rawBytes1[6] = { 0x29, 0x81, 0x70, 0x08, 0x00, 0x00 };
-			injector::WriteMemoryRaw(base + 0x787859, rawBytes1, 6, true);
+	// Enemies
+	OneHitKillCheat();
 
-			unsigned char rawBytes2[6] = { 0x29, 0x91, 0x70, 0x08, 0x00, 0x00 };
-			injector::WriteMemoryRaw(base + 0x787865, rawBytes2, 6, true);
-		}
-
-		if (oneHitKill)
-		{
-			injector::MakeJMP(base + 0x68EE34, &OneHitKillCave, true); // 29 81 70 08 00 00
-			injector::MakeNOP(base + 0x68EE39, 1, true);
-		}
-		else
-		{
-			unsigned char rawBytes[6] = { 0x29, 0x81, 0x70, 0x08, 0x00, 0x00 };
-			injector::WriteMemoryRaw(base + 0x68EE34, rawBytes, 6, true);
-		}
-
-		if (infiniteSubWeapon)
-		{
-			injector::MakeJMP(base + 0x5499F3, &InfiniteRocketsCave, true);
-			injector::MakeNOP(base + 0x5499F8, 1, true);
-
-			injector::MakeJMP(base + 0x54D8D0, &InfiniteGrenadeCave, true);
-			injector::MakeNOP(base + 0x54D8D5, 1, true);
-		}
-		else
-		{
-			unsigned char rocketArray[6] = { 0x89, 0x41, 0x68, 0x89, 0x51, 0x5C };
-			unsigned char grenadeArray[6] = { 0xFF, 0x49, 0x54, 0x8B, 0x41, 0x54 };
-
-			injector::WriteMemoryRaw(base + 0x5499F3, rocketArray, 6, true);
-			injector::WriteMemoryRaw(base + 0x54D8D0, grenadeArray, 6, true);
-		}
-
-		if (noDamageStat)
-		{
-			unsigned char patched[2] = { 0xB8, 0x00 };
-			injector::WriteMemoryRaw(base + 0x81B481, patched, 2, true);
-		}
-		else
-		{
-			unsigned char original[2] = { 0xB8, 0x01 };
-			injector::WriteMemoryRaw(base + 0x81B481, original, 2, true);
-		}
-
-		if (stealth)
-		{
-			unsigned char patched[2] = { 0xEB, 0x19 };
-			injector::WriteMemoryRaw(base + 0x849286, patched, 2, true);
-		}
-		else
-		{
-			unsigned char original[2] = { 0x74, 0x19 };
-			injector::WriteMemoryRaw(base + 0x849286, original, 2, true);
-		}
-
-		if (heightChange)
-		{
-			DWORD player = injector::ReadMemory<DWORD>(base + 0x19C1490);
-			if (player && player > 0x4000)
-			{
-				float height = injector::ReadMemory<float>(player + 0x54);
-				if (GetAsyncKeyState(VK_ADD) & 1)
-				{
-					height += heightRate;
-					injector::WriteMemory<float>(player + 0x54, height);
-				}
-				else if (GetAsyncKeyState(VK_SUBTRACT) & 1)
-				{
-					height -= heightRate;
-					injector::WriteMemory<float>(player + 0x54, height);
-				}
-			}
-		}
-
-		if (groundCheat)
-		{
-			if (KeyBind::IsKeyPressed(groundCheatHotkey))
-				groundEnabled = !groundEnabled;
-
-			if (groundEnabled)
-			{
-				injector::MakeJMP(base + 0xE6B45E, &GroundCheatCave, true);
-				injector::MakeNOP(base + 0xE6B463, 1, true);
-				injector::MakeNOP(base + 0x4E98CD, 3, true);
-			}
-			else
-			{
-				unsigned char rawBytes[6] = { 0xC7, 0x00, 0x00, 0x00, 0x00, 0x00 };
-				unsigned char rawBytes1[3] = { 0x89, 0x46, 0x10 };
-
-				injector::WriteMemoryRaw(base + 0xE6B45E, rawBytes, 6, true);
-				injector::WriteMemoryRaw(base + 0x4E98CD, rawBytes1, 3, true);
-			}
-		}
-
-		if (!groundCheat && groundEnabled)
-			groundEnabled = false;
-
-		if (true) // I don't want to make variable in global function, so it won't mess up the other things
-		{
-			if (KeyBind::IsKeyPressed(temporaryVisorHotkey))
-				visorSwitch = !visorSwitch;
-
-			unsigned int flags = injector::ReadMemory<unsigned int>(base + 0x17EA094);
-			if (visorSwitch)
-				flags |= (1 << 6);
-			else
-				flags &= ~(1 << 6);
-
-			injector::WriteMemory<unsigned int>(base + 0x17EA094, flags);
-		}
-
-		if (autoHpUp)
-		{
-			unsigned int GameplayFlags = (GameFlags)injector::ReadMemory<unsigned int>(base + 0x17EA090);
-			GameplayFlags |= AutoHPUp;
-			injector::WriteMemory<unsigned int>(base + 0x17EA090, GameplayFlags);
-		}
-		else
-		{
-			unsigned int GameplayFlags = (GameFlags)injector::ReadMemory<unsigned int>(base + 0x17EA090);
-			GameplayFlags &= ~AutoHPUp;
-			injector::WriteMemory<unsigned int>(base + 0x17EA090, GameplayFlags);
-		}
-	}
+	// Battle
+	NoDamageStatCheat();
+	StealthCheat();
+	
+	// Entities
+	GroundCheat();
 }
 
 void cheat::LoadConfig() noexcept

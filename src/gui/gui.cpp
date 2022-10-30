@@ -17,17 +17,13 @@
 bool once1 = false;
 void gui::RenderGUI() noexcept
 {
-	DWORD base = cheat::GetBaseAddress(GetCurrentProcess());
-	GameMenuStatus GameMenuStat = (GameMenuStatus)injector::ReadMemory<unsigned int>(base + 0x17E9F9C);
-	bool OnFocus = injector::ReadMemory<bool>(base + 0x19D509C);
-
 	if (!once1)
 	{
 		LoadConfig();
 		once1 = true;
 	}
 
-	if ((KeyBind::IsKeyPressed(menuKey) & 1) && OnFocus)
+	if ((KeyBind::IsKeyPressed(menuKey) & 1) && cheat::OnFocus)
 		show = !show;
 
 	ImGui_ImplDX9_NewFrame();
