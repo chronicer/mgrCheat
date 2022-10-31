@@ -18,11 +18,8 @@ namespace cheat
 	inline unsigned int temporaryVisorHotkey = 80;
 	inline bool visorSwitch = false;
 	inline bool autoHpUp = false;
-	inline float ripperZangekiAnimationSpeedRate = 0.0f;
-	inline float ripperZangekiGameSpeedRate = 0.0f;
-	inline float zangekiAnimationSpeedRate = 0.0f;
-	inline float zangekiGameSpeedRate = 0.0f;
 	inline float ninjarunSpeedRate = 0.0f;
+	inline bool zangekiTimeStop = false;
 	inline HANDLE GameProcess = GetCurrentProcess();
 	inline DWORD base = 0;
 	inline bool OnFocus = false;
@@ -41,6 +38,6 @@ namespace cheat
 	void GroundCheat() noexcept;
 	void TemporaryVisorCheat() noexcept;
 	void AutoHPUpCheat() noexcept;
-	void ZangekiTime() noexcept;
 	void NinjaRunSpeedCheat() noexcept;
+	void ZangekiTimeStopCheat() noexcept;
 }
