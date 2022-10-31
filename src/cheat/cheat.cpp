@@ -213,13 +213,14 @@ void cheat::TemporaryVisorCheat() noexcept
 {
 	if (KeyBind::IsKeyPressed(temporaryVisorHotkey) && OnFocus)
 	{
-		visorSwitch = !visorSwitch;
-
 		unsigned int flags = injector::ReadMemory<unsigned int>(base + 0x17EA094);
+
+		visorSwitch = (flags & 0x40) == 0;
+
 		if (visorSwitch)
-			flags |= (1 << 6);
+			flags |= 0x40;
 		else
-			flags &= ~(1 << 6);
+			flags &= ~0x40;
 
 		injector::WriteMemory<unsigned int>(base + 0x17EA094, flags);
 	}
@@ -241,6 +242,28 @@ void cheat::AutoHPUpCheat() noexcept
 	}
 }
 
+void cheat::ZangekiTime() noexcept
+{
+	DWORD player = injector::ReadMemory<DWORD>(base + 0x19C1490);
+	if (!player)
+		return;
+
+	zangekiAnimationSpeedRate = injector::ReadMemory<float>(player + 0x4060);
+	zangekiGameSpeedRate = injector::ReadMemory<float>(player + 0x4064);
+
+	ripperZangekiAnimationSpeedRate = injector::ReadMemory<float>(player + 0x4068);
+	ripperZangekiGameSpeedRate = injector::ReadMemory<float>(player + 0x406C);
+}
+
+void cheat::NinjaRunSpeedCheat() noexcept
+{
+	DWORD player = injector::ReadMemory<DWORD>(base + 0x19C1490);
+	if (!player)
+		return;
+
+	ninjarunSpeedRate = injector::ReadMemory<float>(player + 0x53E0);
+}
+
 bool once = false;
 void cheat::HandleCheats() noexcept
 {
@@ -259,6 +282,8 @@ void cheat::HandleCheats() noexcept
 	HeightChangeCheat();
 	TemporaryVisorCheat();
 	AutoHPUpCheat();
+	ZangekiTime();
+	NinjaRunSpeedCheat();
 
 	// Enemies
 	OneHitKillCheat();
@@ -281,7 +306,12 @@ void cheat::LoadConfig() noexcept
 	heightChange = iniReader.ReadInteger("Player", "HeightChange", 0) == 1;
 	heightRate = iniReader.ReadFloat("Player", "HeightRate", 0.0f);
 	temporaryVisorHotkey = iniReader.ReadInteger("Player", "VisorHotkey", 80);
-	autoHpUp = iniReader.ReadInteger("Player", "AutoHpUp", 0) == 1; 
+	autoHpUp = iniReader.ReadInteger("Player", "AutoHpUp", 0) == 1;
+	zangekiAnimationSpeedRate = iniReader.ReadFloat("Player", "ZangekiAnimationRate", 0.8000000119f);
+	zangekiGameSpeedRate = iniReader.ReadFloat("Player", "ZangekiSpeedRate", 0.400000006f);
+	ripperZangekiAnimationSpeedRate = iniReader.ReadFloat("Player", "RipperZangekiAnimationRate", 0.8000000119f);
+	ripperZangekiGameSpeedRate = iniReader.ReadFloat("Player", "RipperZangekiSpeedRate", 0.03999999911f);
+	ninjarunSpeedRate = iniReader.ReadFloat("Player", "NinjarunSpeedRate", 0.8999999762f);
 
 	groundCheat = iniReader.ReadInteger("Entities", "GroundCheatEnabled", 0) == 1;
 	groundCheatHotkey = iniReader.ReadInteger("Entities", "GroundCheatHotkey", 75);
@@ -303,6 +333,11 @@ void cheat::SaveConfig() noexcept
 	iniReader.WriteFloat("Player", "HeightRate", heightRate);
 	iniReader.WriteInteger("Player", "VisorHotkey", temporaryVisorHotkey);
 	iniReader.WriteInteger("Player", "AutoHpUp", autoHpUp);
+	iniReader.WriteFloat("Player", "ZangekiAnimationRate", zangekiAnimationSpeedRate);
+	iniReader.WriteFloat("Player", "ZangekiSpeedRate", zangekiGameSpeedRate);
+	iniReader.WriteFloat("Player", "RipperZangekiAnimationRate", ripperZangekiAnimationSpeedRate);
+	iniReader.WriteFloat("Player", "RipperZangekiSpeedRate", ripperZangekiGameSpeedRate);
+	iniReader.WriteFloat("Player", "NinjarunSpeedRate", ninjarunSpeedRate);
 
 	iniReader.WriteInteger("Entities", "GroundCheatEnabled", groundCheat);
 	iniReader.WriteInteger("Entities", "GroundCheatHotkey", groundCheatHotkey);

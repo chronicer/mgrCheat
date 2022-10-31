@@ -32,7 +32,7 @@ void gui::RenderGUI() noexcept
 
 	if (show)
 	{
-		ImGui::Begin("Cheat Menu", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);
+		ImGui::Begin("Cheat Menu", NULL, ImGuiWindowFlags_NoCollapse);
 		ImGui::SetWindowSize({width, height});
 		ImGuiIO io = ImGui::GetIO();
 		io.MouseDrawCursor = true;
@@ -48,6 +48,27 @@ void gui::RenderGUI() noexcept
 				ImGui::SliderFloat("Height Change Rate", &cheat::heightRate, 0.0f, 100.0f, "%.3f", 1.0f);
 				KeyBind::Hotkey("Visor Hotkey: ", &cheat::temporaryVisorHotkey);
 				ImGui::Checkbox("Auto HP Up", &cheat::autoHpUp);
+				if (ImGui::CollapsingHeader("Adjustments")) // uhhhhh
+				{
+					DWORD player = injector::ReadMemory<DWORD>(cheat::base + 0x19C1490);
+					if (ImGui::TreeNode("Blade Mode"))
+					{
+						if (player)
+						{
+							if (ImGui::InputFloat("Ripper Zangeki Animation Speed Rate", &cheat::ripperZangekiAnimationSpeedRate, 0.0f, 0.0f, "%.5f", 0))
+								injector::WriteMemory<float>(player + 0x4068, cheat::ripperZangekiAnimationSpeedRate);
+							if (ImGui::InputFloat("Ripper Zangeki Game Speed Rate", &cheat::ripperZangekiGameSpeedRate, 0.0f, 0.0f, "%.5f", 0))
+								injector::WriteMemory<float>(player + 0x406C, cheat::ripperZangekiGameSpeedRate);
+							if (ImGui::InputFloat("Zangeki Animation Speed Rate", &cheat::zangekiAnimationSpeedRate, 0.0f, 0.0f, "%.5f", 0))
+								injector::WriteMemory<float>(player + 0x4060, cheat::zangekiAnimationSpeedRate);
+							if (ImGui::InputFloat("Zangeki Game Speed Rate", &cheat::zangekiGameSpeedRate, 0.0f, 0.0f, "%.5f", 0))
+								injector::WriteMemory<float>(player + 0x4064, cheat::zangekiGameSpeedRate);
+						}
+						ImGui::TreePop();
+					}
+					if (ImGui::InputFloat("Ninja Run Speed Rate", &cheat::ninjarunSpeedRate))
+						injector::WriteMemory<float>(player + 0x53E0, cheat::ninjarunSpeedRate);
+				}
 				ImGui::EndTabItem();
 			}
 			if (ImGui::BeginTabItem("Entities"))
