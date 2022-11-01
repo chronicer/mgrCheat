@@ -8,6 +8,7 @@
 #include "../KeyBind.h"
 #include "../enums.h"
 #include "../kiero.h"
+#include "../minhook/include/MinHook.h"
 
 #include "../imgui/imgui.h"
 #include "../imgui/imgui_impl_win32.h"
@@ -95,12 +96,6 @@ void gui::RenderGUI() noexcept
 
 					cheat::SaveConfig();
 					SaveConfig();
-				}
-				if (ImGui::Button("UNLOAD"))
-				{
-					cheat::Reset(); // so it won't mess up game memory
-					Reset();
-					kiero::shutdown();
 				}
 				ImGui::EndTabItem();
 			}

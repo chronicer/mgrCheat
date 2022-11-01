@@ -1,6 +1,7 @@
 ﻿#include "pch.h"
 
 #include "kiero.h"
+#include "minhook/include/MinHook.h"
 #include <d3d9.h>
 
 #include "imgui/imgui.h"
@@ -80,6 +81,18 @@ BOOL WINAPI DllMain(HINSTANCE hInstance, DWORD fdwReason, LPVOID)
     {
     case DLL_PROCESS_ATTACH:
         CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)kieroExampleThread, NULL, 0, NULL);
+        break;
+    case DLL_PROCESS_DETACH:
+        Sleep(100);
+        ImGui_ImplDX9_Shutdown();
+        ImGui_ImplWin32_Shutdown();
+        ImGui::DestroyContext();
+
+        FreeLibraryAndExitThread(hInstance, 0);
+
+        kiero::shutdown();
+        MH_RemoveHook(MH_ALL_HOOKS);
+        MH_Uninitialize();
         break;
     }
 
