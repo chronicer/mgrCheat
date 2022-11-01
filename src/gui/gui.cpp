@@ -7,6 +7,7 @@
 #include "../KeyBinds.h"
 #include "../KeyBind.h"
 #include "../enums.h"
+#include "../kiero.h"
 
 #include "../imgui/imgui.h"
 #include "../imgui/imgui_impl_win32.h"
@@ -87,6 +88,20 @@ void gui::RenderGUI() noexcept
 					cheat::LoadConfig();
 					LoadConfig();
 				}
+				if (ImGui::Button("Reset Config"))
+				{
+					cheat::Reset();
+					Reset();
+
+					cheat::SaveConfig();
+					SaveConfig();
+				}
+				if (ImGui::Button("UNLOAD"))
+				{
+					cheat::Reset(); // so it won't mess up game memory
+					Reset();
+					kiero::shutdown();
+				}
 				ImGui::EndTabItem();
 			}
 			ImGui::EndTabBar();
@@ -111,4 +126,11 @@ void gui::LoadConfig() noexcept
 	CIniReader iniReader("CheatMenu.ini");
 
 	menuKey = iniReader.ReadInteger("Menu", "OpenMenuHotkey", 45);
+}
+
+void gui::Reset() noexcept
+{
+	width = 900.0f;
+	height = 600.0f;
+	menuKey = 45;
 }

@@ -28,6 +28,7 @@ namespace cheat
 	void HandleCheats() noexcept;
 	void LoadConfig() noexcept;
 	void SaveConfig() noexcept;
+	void Reset() noexcept;
 	void MugenZangekiCheat() noexcept;
 	void InfiniteHealthCheat() noexcept;
 	void OneHitKillCheat() noexcept;

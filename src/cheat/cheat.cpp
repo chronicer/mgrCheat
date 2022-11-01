@@ -340,3 +340,23 @@ void cheat::SaveConfig() noexcept
 	iniReader.WriteInteger("Battle", "NoDamageStat", noDamageStat);
 	iniReader.WriteInteger("Battle", "Stealth", stealth);
 }
+
+void cheat::Reset() noexcept
+{
+	infiniteFc = false;
+	infiniteHealth = false;
+	oneHitKill = false;
+	infiniteSubWeapon = false;
+	noDamageStat = false;
+	stealth = false;
+	heightRate = 0.0f;
+	heightChange = false;
+	groundCheat = false;
+	groundEnabled = false;
+	groundCheatHotkey = 75;
+	temporaryVisorHotkey = 80;
+	visorSwitch = false;
+	autoHpUp = false;
+	ninjarunSpeedRate = 0.0f;
+	zangekiTimeStop = false;
+}

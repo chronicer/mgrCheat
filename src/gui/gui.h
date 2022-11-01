@@ -9,5 +9,6 @@ namespace gui
 
 	void RenderGUI() noexcept;
 	void LoadConfig() noexcept;
+	void Reset() noexcept;
 	void SaveConfig() noexcept;
 }
