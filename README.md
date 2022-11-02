@@ -24,7 +24,7 @@ To open menu you need to press insert while in game
  - [ ] Re-write entire cheat (since it doesn't show for other but me)
  
  ## Compiling
- Compile in debug mode, since release doesn't work (FIXED!!!)
+Compile in release mode
 
 ## How to install 
 Install [DirectX9](https://www.microsoft.com/en-us/download/details.aspx?id=35), [Visual C++ Redistributable 2022 x86](https://aka.ms/vs/17/release/vc_redist.x86.exe) for cheat menu
