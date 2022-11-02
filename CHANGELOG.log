@@ -4,4 +4,4 @@
 0.13: Config system so you don't need to enable some cheats on load, bind system (re-binding keys), tabs system so you don't need to allocate some cheats in one tab
 0.14: Renamed mgrCheat folder to src, added visor hotkey, auto hp up(regeneration in other words)
 0.15: Add reset config and cheats
-0.15-FIX: Fixed compatability
+0.15-FIX: Fixed compatibility
