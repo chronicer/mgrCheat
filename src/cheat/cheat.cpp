@@ -82,6 +82,7 @@ void __declspec(naked) GroundCheatCave()
 	}
 }
 
+// Infinite fuel container
 void cheat::MugenZangekiCheat() noexcept
 {
 	if (infiniteFc)
@@ -98,6 +99,7 @@ void cheat::MugenZangekiCheat() noexcept
 	}
 }
 
+// You can't die in game
 void cheat::InfiniteHealthCheat() noexcept
 {
 	if (infiniteHealth) // its just patches the game, but doesn't write the value into
@@ -115,6 +117,7 @@ void cheat::InfiniteHealthCheat() noexcept
 	}
 }
 
+// One hit kills enemies (bosses included)
 void cheat::OneHitKillCheat() noexcept
 {
 	if (oneHitKill)
@@ -129,6 +132,7 @@ void cheat::OneHitKillCheat() noexcept
 	}
 }
 
+// Infinite sub-weapon ammo
 void cheat::InfiniteSubWeaponCheat() noexcept
 {
 	if (infiniteSubWeapon)
@@ -149,6 +153,7 @@ void cheat::InfiniteSubWeaponCheat() noexcept
 	}
 }
 
+// No damage status for battles
 void cheat::NoDamageStatCheat() noexcept
 {
 	unsigned char raw[1] = { 0x01 };
@@ -156,6 +161,7 @@ void cheat::NoDamageStatCheat() noexcept
 	injector::WriteMemoryRaw(base + 0x81B482, noDamageStat ? patched : raw, 1, true);
 }
 
+// Stealth cheat, i think you get it
 void cheat::StealthCheat() noexcept
 {
 	unsigned char patched[2] = { 0xEB, 0x19 };
@@ -163,6 +169,7 @@ void cheat::StealthCheat() noexcept
 	injector::WriteMemoryRaw(base + 0x849286, stealth ? patched : original, 2, true);
 }
 
+// Changes height
 void cheat::HeightChangeCheat() noexcept
 {
 	if (GameMenuStat != InGame || !OnFocus)
@@ -188,6 +195,7 @@ void cheat::HeightChangeCheat() noexcept
 	}
 }
 
+// Set ground for specific height
 void cheat::GroundCheat() noexcept
 {
 	if (groundCheat)
@@ -209,6 +217,7 @@ void cheat::GroundCheat() noexcept
 	}
 }
 
+// Toggles visor
 void cheat::TemporaryVisorCheat() noexcept
 {
 	if (KeyBind::IsKeyPressed(temporaryVisorHotkey) && OnFocus)
@@ -226,6 +235,7 @@ void cheat::TemporaryVisorCheat() noexcept
 	}
 }
 
+// Regenerates health
 void cheat::AutoHPUpCheat() noexcept
 {
 	if (autoHpUp)
@@ -242,6 +252,7 @@ void cheat::AutoHPUpCheat() noexcept
 	}
 }
 
+// Ninja run speed, you just need to type speed
 void cheat::NinjaRunSpeedCheat() noexcept
 {
 	DWORD player = injector::ReadMemory<DWORD>(base + 0x19C1490);
@@ -251,6 +262,7 @@ void cheat::NinjaRunSpeedCheat() noexcept
 	ninjarunSpeedRate = injector::ReadMemory<float>(player + 0x53E0);
 }
 
+// Stops time (very familiar to stoping the time)
 void cheat::ZangekiTimeStopCheat() noexcept
 {
 	DWORD player = injector::ReadMemory<DWORD>(base + 0x19C1490);
@@ -266,6 +278,7 @@ void cheat::ZangekiTimeStopCheat() noexcept
 }
 
 bool once = false;
+// Handles all cheats at once
 void cheat::HandleCheats() noexcept
 {
 	base = GetBaseAddress(GetCurrentProcess());
@@ -297,6 +310,7 @@ void cheat::HandleCheats() noexcept
 	GroundCheat();
 }
 
+// Loads config (ini file)
 void cheat::LoadConfig() noexcept
 {
 	CIniReader iniReader("CheatMenu.ini");
@@ -319,6 +333,7 @@ void cheat::LoadConfig() noexcept
 	stealth = iniReader.ReadInteger("Battle", "Stealth", 0) == 1;
 }
 
+// Saves config (ini file)
 void cheat::SaveConfig() noexcept
 {
 	CIniReader iniReader("CheatMenu.ini");
@@ -341,6 +356,7 @@ void cheat::SaveConfig() noexcept
 	iniReader.WriteInteger("Battle", "Stealth", stealth);
 }
 
+// Resets cheats
 void cheat::Reset() noexcept
 {
 	infiniteFc = false;

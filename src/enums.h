@@ -1,5 +1,6 @@
 #pragma once
 
+// Status for game (pause, settings, main menu, etc.)
 enum GameMenuStatus : unsigned int
 {
 	InMenu = 0x0,
@@ -23,6 +24,7 @@ enum GameMenuStatus : unsigned int
 	ProcessOutOfPause = 0x12,
 };
 
+// Some bit flags for gameplay
 enum GameFlags : unsigned int
 {
 	QTEUiDisable = 0x1,

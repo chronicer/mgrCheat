@@ -168,6 +168,7 @@ static const char* KeyNames[] = {
     "VK_LMENU",
     "VK_RMENU"
 };
+
 static const int KeyCodes[] = {
     0x0,  //Undefined
     0x01,

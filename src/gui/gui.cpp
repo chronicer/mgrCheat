@@ -17,6 +17,7 @@
 #pragma warning(disable : 4996)
 
 bool once1 = false;
+// Renders gui for cheats
 void gui::RenderGUI() noexcept
 {
 	if (!once1)
@@ -109,6 +110,7 @@ void gui::RenderGUI() noexcept
 	ImGui_ImplDX9_RenderDrawData(ImGui::GetDrawData());
 }
 
+// Currently saves only menu hotkey
 void gui::SaveConfig() noexcept
 {
 	CIniReader iniReader("CheatMenu.ini");
@@ -116,6 +118,7 @@ void gui::SaveConfig() noexcept
 	iniReader.WriteInteger("Menu", "OpenMenuHotkey", menuKey);
 }
 
+// Loads only hotkey variable
 void gui::LoadConfig() noexcept
 {
 	CIniReader iniReader("CheatMenu.ini");
@@ -123,6 +126,7 @@ void gui::LoadConfig() noexcept
 	menuKey = iniReader.ReadInteger("Menu", "OpenMenuHotkey", 45);
 }
 
+// Resets gui variables
 void gui::Reset() noexcept
 {
 	width = 900.0f;
