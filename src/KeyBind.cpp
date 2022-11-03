@@ -25,7 +25,7 @@ void KeyBind::Hotkey(const char* label, unsigned int* k) noexcept
 		GetKeyNameText(scanCode << 16, (LPSTR)name, 128);
 	}
 	if (waitingforkey == false) {
-		if (ImGui::Button(name))
+		if (ImGui::Button((*k == 0) ? "None" : name))
 			waitingforkey = true;
 	}
 	else if (waitingforkey == true) {

@@ -266,15 +266,17 @@ void cheat::NinjaRunSpeedCheat() noexcept
 void cheat::ZangekiTimeStopCheat() noexcept
 {
 	DWORD player = injector::ReadMemory<DWORD>(base + 0x19C1490);
-	float defaultValue[4] = { 0.8000000119f, 0.400000006f, 0.8000000119f, 0.03999999911f };
-	float changedValue[4] = { 1.0f, 0.00010f, 1.0, 0.00010f };
+	float defaultValue[6] = { 0.8000000119f, 0.400000006f, 0.8000000119f, 0.03999999911f, 0.8000000119f, 0.03999999911f};
+	float changedValue[6] = { 1.0f, 0.00010f, 1.0f, 0.00010f, 1.0f, 0.00010f };
 	if (!player)
 		return;
-
+	// I think we need to disable GameXYAttackOff to make it work on Monsoon boss
 	injector::WriteMemory<float>(player + 0x4060, zangekiTimeStop ? changedValue[0] : defaultValue[0]);
 	injector::WriteMemory<float>(player + 0x4064, zangekiTimeStop ? changedValue[1] : defaultValue[1]);
 	injector::WriteMemory<float>(player + 0x4068, zangekiTimeStop ? changedValue[2] : defaultValue[2]);
 	injector::WriteMemory<float>(player + 0x406C, zangekiTimeStop ? changedValue[3] : defaultValue[3]);
+	injector::WriteMemory<float>(player + 0x4070, zangekiTimeStop ? changedValue[4] : defaultValue[4]);
+	injector::WriteMemory<float>(player + 0x4074, zangekiTimeStop ? changedValue[5] : defaultValue[5]);
 }
 
 bool once = false;
