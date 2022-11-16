@@ -20,11 +20,13 @@ namespace cheat
 	inline bool autoHpUp = false;
 	inline float ninjarunSpeedRate = 0.0f;
 	inline bool zangekiTimeStop = false;
-	inline HANDLE GameProcess = GetCurrentProcess();
-	inline DWORD base = 0;
+	inline bool timeStop = false;
+	inline bool timeStopSwitch = false;
+	inline unsigned int timeStopHotkey = 84;
+	inline bool dealZeroDamage = false;
+	inline DWORD base = (DWORD)GetModuleHandleA(NULL);
 	inline bool OnFocus = false;
 
-	DWORD GetBaseAddress(const HANDLE hProcess) noexcept;
 	void HandleCheats() noexcept;
 	void LoadConfig() noexcept;
 	void SaveConfig() noexcept;
@@ -41,4 +43,6 @@ namespace cheat
 	void AutoHPUpCheat() noexcept;
 	void NinjaRunSpeedCheat() noexcept;
 	void ZangekiTimeStopCheat() noexcept;
+	void TimeStop() noexcept;
+	void Deal0Damage() noexcept;
 }

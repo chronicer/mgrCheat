@@ -24,11 +24,12 @@ void KeyBind::Hotkey(const char* label, unsigned int* k) noexcept
 	default:
 		GetKeyNameText(scanCode << 16, (LPSTR)name, 128);
 	}
-	if (waitingforkey == false) {
+	if (!waitingforkey) {
 		if (ImGui::Button((*k == 0) ? "None" : name))
 			waitingforkey = true;
 	}
-	else if (waitingforkey == true) {
+	else
+	{
 		ImGui::Button("...");
 		Sleep(20);
 		for (auto& Key : KeyCodes)
@@ -58,7 +59,5 @@ bool KeyBind::IsKeyPressed(unsigned int k) noexcept
 	if (k == KeyCodes[0])
 		return false;
 
-	if (ImGui::IsKeyPressed(k, false))
-		return true;
-	return false;
+	return ImGui::IsKeyPressed(k, false);
 }

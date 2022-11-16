@@ -8,29 +8,10 @@
 *  Make functions for each cheat instead (since return will cancel the handle cheats instead of if condition  
 */
 
-DWORD cheat::GetBaseAddress(const HANDLE hProcess) noexcept
-{
-	if (hProcess == NULL)
-		return NULL; // No access to the process
-
-	HMODULE lphModule[1024]; // Array that receives the list of module handles
-	DWORD lpcbNeeded(NULL); // Output of EnumProcessModules, giving the number of bytes requires to store all modules handles in the lphModule array
-
-	if (!EnumProcessModules(hProcess, lphModule, sizeof(lphModule), &lpcbNeeded))
-		return NULL; // Impossible to read modules
-
-	TCHAR szModName[MAX_PATH];
-	if (!GetModuleFileNameEx(hProcess, lphModule[0], szModName, sizeof(szModName) / sizeof(TCHAR)))
-		return NULL; // Impossible to get module info
-
-	return (DWORD)lphModule[0]; // Module 0 is apparently always the EXE itself, returning its address
-}
-
-DWORD base1 = cheat::GetBaseAddress(GetCurrentProcess());
-DWORD OneHitKillCaveExit = base1 + 0x68EE3A;
-DWORD InfiniteRocketsCaveExit = base1 + 0x5499F9;
-DWORD InfiniteGrenadeCaveExit = base1 + 0x54D8D6;
-DWORD GroundCheatCaveExit = base1 + 0xE6B464;
+DWORD OneHitKillCaveExit = cheat::base + 0x68EE3A;
+DWORD InfiniteRocketsCaveExit = cheat::base + 0x5499F9;
+DWORD InfiniteGrenadeCaveExit = cheat::base + 0x54D8D6;
+DWORD GroundCheatCaveExit = cheat::base + 0xE6B464;
 
 GameMenuStatus GameMenuStat = (GameMenuStatus)injector::ReadMemory<unsigned int>(cheat::base + 0x17E9F9C);
 
@@ -82,6 +63,13 @@ void __declspec(naked) GroundCheatCave()
 	}
 }
 
+void GameTime_SetTime(int id, float time) noexcept
+{
+	DWORD GameTime = cheat::base + 0x17E93B0;
+	auto calc = (4 * id + 15) * 4;
+	injector::WriteMemory<float>(GameTime + calc, time);
+}
+
 // Infinite fuel container
 void cheat::MugenZangekiCheat() noexcept
 {
@@ -102,71 +90,100 @@ void cheat::MugenZangekiCheat() noexcept
 // You can't die in game
 void cheat::InfiniteHealthCheat() noexcept
 {
-	if (infiniteHealth) // its just patches the game, but doesn't write the value into
+	static bool once = false;
+	if (infiniteHealth && !once) // its just patches the game, but doesn't write the value into
 	{
 		injector::MakeNOP(base + 0x787859, 6, true);
 		injector::MakeNOP(base + 0x787865, 6, true);
+		once = true;
 	}
-	else
+	else if (!infiniteHealth && once)
 	{
 		unsigned char rawBytes1[6] = { 0x29, 0x81, 0x70, 0x08, 0x00, 0x00 };
 		injector::WriteMemoryRaw(base + 0x787859, rawBytes1, 6, true);
 
 		unsigned char rawBytes2[6] = { 0x29, 0x91, 0x70, 0x08, 0x00, 0x00 };
 		injector::WriteMemoryRaw(base + 0x787865, rawBytes2, 6, true);
+		once = false;
 	}
 }
 
 // One hit kills enemies (bosses included)
 void cheat::OneHitKillCheat() noexcept
 {
-	if (oneHitKill)
+	static bool once = false;
+	if (oneHitKill && !once)
 	{
 		injector::MakeJMP(base + 0x68EE34, &OneHitKillCave, true); // 29 81 70 08 00 00
 		injector::MakeNOP(base + 0x68EE39, 1, true);
+		once = true;
 	}
-	else
+	else if (!oneHitKill && once)
 	{
 		unsigned char rawBytes[6] = { 0x29, 0x81, 0x70, 0x08, 0x00, 0x00 };
 		injector::WriteMemoryRaw(base + 0x68EE34, rawBytes, 6, true);
+		once = false;
 	}
 }
 
 // Infinite sub-weapon ammo
 void cheat::InfiniteSubWeaponCheat() noexcept
 {
-	if (infiniteSubWeapon)
+	static bool once = false;
+	if (infiniteSubWeapon && !once)
 	{
 		injector::MakeJMP(base + 0x5499F3, &InfiniteRocketsCave, true);
 		injector::MakeNOP(base + 0x5499F8, 1, true);
 
 		injector::MakeJMP(base + 0x54D8D0, &InfiniteGrenadeCave, true);
 		injector::MakeNOP(base + 0x54D8D5, 1, true);
+		once = true;
 	}
-	else
+	else if (!infiniteSubWeapon && once)
 	{
 		unsigned char rocketArray[6] = { 0x89, 0x41, 0x68, 0x89, 0x51, 0x5C };
 		unsigned char grenadeArray[6] = { 0xFF, 0x49, 0x54, 0x8B, 0x41, 0x54 };
 
 		injector::WriteMemoryRaw(base + 0x5499F3, rocketArray, 6, true);
 		injector::WriteMemoryRaw(base + 0x54D8D0, grenadeArray, 6, true);
+		once = false;
 	}
 }
 
 // No damage status for battles
 void cheat::NoDamageStatCheat() noexcept
 {
-	unsigned char raw[1] = { 0x01 };
-	unsigned char patched[1] = { 0x00 };
-	injector::WriteMemoryRaw(base + 0x81B482, noDamageStat ? patched : raw, 1, true);
+	static bool once = false;
+	if (noDamageStat && !once)
+	{
+		unsigned char patched[1] = { 0x00 };
+		injector::WriteMemoryRaw(base + 0x81B482, patched, 1, true);
+		once = true;
+	}
+	else if (!noDamageStat && once)
+	{
+		unsigned char raw[1] = { 0x01 };
+		injector::WriteMemoryRaw(base + 0x81B482, raw, 1, true);
+		once = false;
+	}
 }
 
 // Stealth cheat, i think you get it
 void cheat::StealthCheat() noexcept
 {
-	unsigned char patched[2] = { 0xEB, 0x19 };
-	unsigned char original[2] = { 0x74, 0x19 };
-	injector::WriteMemoryRaw(base + 0x849286, stealth ? patched : original, 2, true);
+	static bool once = false;
+	if (stealth && !once)
+	{
+		unsigned char patched[2] = { 0xEB, 0x19 };
+		injector::WriteMemoryRaw(base + 0x849286, patched, 2, true);
+		once = true;
+	}
+	else if (!stealth && once)
+	{
+		unsigned char original[2] = { 0x74, 0x19 };
+		injector::WriteMemoryRaw(base + 0x849286, original, 2, true);
+		once = false;
+	}
 }
 
 // Changes height
@@ -198,22 +215,27 @@ void cheat::HeightChangeCheat() noexcept
 // Set ground for specific height
 void cheat::GroundCheat() noexcept
 {
+	static bool once = false;
 	if (groundCheat)
 	{
 		if (KeyBind::IsKeyPressed(groundCheatHotkey) && GameMenuStat == InGame && OnFocus)
 			groundEnabled = !groundEnabled;
-
-		injector::MakeJMP(base + 0xE6B45E, &GroundCheatCave, true);
-		injector::MakeNOP(base + 0xE6B463, 1, true);
-		injector::MakeNOP(base + 0x4E98CD, 3, true);
+		if (!once)
+		{
+			injector::MakeJMP(base + 0xE6B45E, &GroundCheatCave, true);
+			injector::MakeNOP(base + 0xE6B463, 1, true);
+			injector::MakeNOP(base + 0x4E98CD, 3, true);
+			once = true;
+		}
 	}
-	else
+	else if (!groundCheat && once)
 	{
 		unsigned char rawBytes[6] = { 0xC7, 0x00, 0x00, 0x00, 0x00, 0x00 };
 		unsigned char rawBytes1[3] = { 0x89, 0x46, 0x10 };
 
 		injector::WriteMemoryRaw(base + 0xE6B45E, rawBytes, 6, true);
 		injector::WriteMemoryRaw(base + 0x4E98CD, rawBytes1, 3, true);
+		once = false;
 	}
 }
 
@@ -279,11 +301,52 @@ void cheat::ZangekiTimeStopCheat() noexcept
 	injector::WriteMemory<float>(player + 0x4074, zangekiTimeStop ? changedValue[5] : defaultValue[5]);
 }
 
-bool once = false;
+// Literally time stop
+void cheat::TimeStop() noexcept
+{
+	static bool once = false;
+	if (KeyBind::IsKeyPressed(timeStopHotkey) && timeStop && OnFocus && GameMenuStat == InGame)
+	{
+		timeStopSwitch = injector::ReadMemory<float>((base + 0x17E93B0) + ((4 * 0 + 15) * 4)) == 1.0f;
+
+		once = !timeStopSwitch;
+		if (!timeStopSwitch && once)
+		{
+			GameTime_SetTime(0, 1.0f);
+			GameTime_SetTime(1, 1.0f);
+			GameTime_SetTime(2, 1.0f);
+			// GameTime_SetTime(3, 1.0f); // RPGs speed, voices, particle, etc.
+		}
+	}
+	if (timeStopSwitch && !once)
+	{
+		GameTime_SetTime(0, 0.0001f);
+		GameTime_SetTime(1, 9999.958008f);
+		GameTime_SetTime(2, 0.0001f);
+		// GameTime_SetTime(3, 9999.958008f); // RPGs speed, voices, particle, etc.
+	}
+}
+
+void cheat::Deal0Damage() noexcept
+{
+	static bool once = false;
+	if (dealZeroDamage && !once)
+	{
+		injector::MakeNOP(base + 0x68EE34, 6, true);
+		once = true;
+	}
+	else if (!dealZeroDamage && once)
+	{
+		unsigned char original[6] = { 0x29, 0x81, 0x70, 0x08, 0x00, 0x00 };
+		injector::WriteMemoryRaw(base + 0x68EE34, original, 6, true);
+		once = false;
+	}
+}
+
 // Handles all cheats at once
 void cheat::HandleCheats() noexcept
 {
-	base = GetBaseAddress(GetCurrentProcess());
+	static bool once = false;
 	GameMenuStat = (GameMenuStatus)injector::ReadMemory<unsigned int>(base + 0x17E9F9C);
 	OnFocus = injector::ReadMemory<bool>(base + 0x19D509C); // we will process hotkey while ONFOCUS and INGAME state
 	if (!once)
@@ -300,9 +363,11 @@ void cheat::HandleCheats() noexcept
 	AutoHPUpCheat();
 	NinjaRunSpeedCheat();
 	ZangekiTimeStopCheat();
+	TimeStop();
 
 	// Enemies
 	OneHitKillCheat();
+	Deal0Damage();
 
 	// Battle
 	NoDamageStatCheat();
@@ -325,7 +390,10 @@ void cheat::LoadConfig() noexcept
 	temporaryVisorHotkey = iniReader.ReadInteger("Player", "VisorHotkey", 80);
 	autoHpUp = iniReader.ReadInteger("Player", "AutoHpUp", 0) == 1;
 	zangekiTimeStop = iniReader.ReadInteger("Player", "ZangekiTimeStop", 0) == 1;
+	dealZeroDamage = iniReader.ReadInteger("Player", "DeakZeroDamage", 0) == 1;
 
+	timeStop = iniReader.ReadInteger("Entities", "TimeStop", 0) == 1;
+	timeStopHotkey = iniReader.ReadInteger("Entities", "TimeStopHotkey", 84);
 	groundCheat = iniReader.ReadInteger("Entities", "GroundCheatEnabled", 0) == 1;
 	groundCheatHotkey = iniReader.ReadInteger("Entities", "GroundCheatHotkey", 75);
 
@@ -348,7 +416,10 @@ void cheat::SaveConfig() noexcept
 	iniReader.WriteInteger("Player", "VisorHotkey", temporaryVisorHotkey);
 	iniReader.WriteInteger("Player", "AutoHpUp", autoHpUp);
 	iniReader.WriteInteger("Player", "ZangekiTimeStop", zangekiTimeStop);
+	iniReader.WriteInteger("Player", "DealZeroDamage", dealZeroDamage);
 
+	iniReader.WriteInteger("Entities", "TimeStop", timeStop);
+	iniReader.WriteInteger("Entities", "TimeStopHotkey", timeStopHotkey);
 	iniReader.WriteInteger("Entities", "GroundCheatEnabled", groundCheat);
 	iniReader.WriteInteger("Entities", "GroundCheatHotkey", groundCheatHotkey);
 
@@ -377,4 +448,7 @@ void cheat::Reset() noexcept
 	autoHpUp = false;
 	ninjarunSpeedRate = 0.0f;
 	zangekiTimeStop = false;
+	timeStop = false;
+	timeStopHotkey = 84;
+	dealZeroDamage = false;
 }

@@ -46,7 +46,7 @@ void gui::RenderGUI() noexcept
 			{
 				ImGui::Checkbox("Infinite Fuel Container", &cheat::infiniteFc);
 				ImGui::Checkbox("Infinite Health", &cheat::infiniteHealth);
-				ImGui::Checkbox("Infinite Subweapon Ammo", &cheat::infiniteSubWeapon);
+				ImGui::Checkbox("Infinite Subweapon Ammo & Supplies", &cheat::infiniteSubWeapon);
 				ImGui::Checkbox("Height Change (numpad +, -)", &cheat::heightChange);
 				ImGui::SliderFloat("Height Change Rate", &cheat::heightRate, 0.0f, 100.0f, "%.3f", 1.0f);
 				KeyBind::Hotkey("Visor Hotkey: ", &cheat::temporaryVisorHotkey);
@@ -64,11 +64,15 @@ void gui::RenderGUI() noexcept
 				ImGui::Checkbox("Ground Cheat", &cheat::groundCheat);
 				if (cheat::groundCheat)
 					KeyBind::Hotkey("Hotkey: ", &cheat::groundCheatHotkey);
+				ImGui::Checkbox("Time Stop", &cheat::timeStop);
+				if (cheat::timeStop)
+					KeyBind::Hotkey("Time Stop hotkey: ", &cheat::timeStopHotkey);
 				ImGui::EndTabItem();
 			}
 			if (ImGui::BeginTabItem("Enemies"))
 			{
 				ImGui::Checkbox("One Hit Kill", &cheat::oneHitKill);
+				ImGui::Checkbox("Deal Zero Damage", &cheat::dealZeroDamage);
 				ImGui::EndTabItem();
 			}
 			if (ImGui::BeginTabItem("Battle"))
