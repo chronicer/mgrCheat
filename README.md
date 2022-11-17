@@ -12,6 +12,8 @@ Metal Gear Rising Revengeance Cheat
     - Ground cheat(thanks to sssiyan and hitchhiker)
     - Visor hotkey
     - Auto hp up(i.e regeneration)
+    - Deal 0 damage
+    - Time stop (press T and time will be frozen)
     
 To open menu you need to press insert while in game
     
