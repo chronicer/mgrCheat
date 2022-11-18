@@ -25,6 +25,9 @@ To open menu you need to press insert while in game
  - [ ] Maybe add different headers and sources files for specific objects in game?
  - [ ] Re-write entire cheat (since it doesn't show for other but me)
  
+## Plans
+Make plugin sdk so people can use it as main source of modding?
+ 
 ## Compiling
 Compile with Visual Studio, on release mode(x86)
 
