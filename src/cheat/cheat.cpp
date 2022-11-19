@@ -1,8 +1,10 @@
 #include "cheat.h"
 #include "../injector/injector.hpp"
 #include "../IniReader.h"
-#include "../enums.h"
 #include "../KeyBind.h"
+#include "../game/cSlowRateManager.h"
+#include "../game/GameFlags.h"
+#include "../game/GameMenuStatus.h"
 
 /* TODO #
 *  Make functions for each cheat instead (since return will cancel the handle cheats instead of if condition  
@@ -63,12 +65,7 @@ void __declspec(naked) GroundCheatCave()
 	}
 }
 
-void GameTime_SetTime(int id, float time) noexcept
-{
-	DWORD GameTime = cheat::base + 0x17E93B0;
-	auto calc = (4 * id + 15) * 4;
-	injector::WriteMemory<float>(GameTime + calc, time);
-}
+
 
 // Infinite fuel container
 void cheat::MugenZangekiCheat() noexcept
@@ -288,6 +285,7 @@ void cheat::NinjaRunSpeedCheat() noexcept
 void cheat::ZangekiTimeStopCheat() noexcept
 {
 	DWORD player = injector::ReadMemory<DWORD>(base + 0x19C1490);
+
 	float defaultValue[6] = { 0.8000000119f, 0.400000006f, 0.8000000119f, 0.03999999911f, 0.8000000119f, 0.03999999911f};
 	float changedValue[6] = { 1.0f, 0.00010f, 1.0f, 0.00010f, 1.0f, 0.00010f };
 	if (!player)
@@ -305,25 +303,24 @@ void cheat::ZangekiTimeStopCheat() noexcept
 void cheat::TimeStop() noexcept
 {
 	static bool once = false;
+	static auto SlowRateManager = GetcSlowRateManager();
 	if (KeyBind::IsKeyPressed(timeStopHotkey) && timeStop && OnFocus && GameMenuStat == InGame)
 	{
-		timeStopSwitch = injector::ReadMemory<float>((base + 0x17E93B0) + ((4 * 0 + 15) * 4)) == 1.0f;
+		timeStopSwitch = SlowRateManager->GetSlowRate(GAMEWORLDSPEED) == 1.0f;
 
 		once = !timeStopSwitch;
 		if (!timeStopSwitch && once)
 		{
-			GameTime_SetTime(0, 1.0f);
-			GameTime_SetTime(1, 1.0f);
-			GameTime_SetTime(2, 1.0f);
-			// GameTime_SetTime(3, 1.0f); // RPGs speed, voices, particle, etc.
+			SlowRateManager->SetSlowRate(GAMEWORLDSPEED, 1.0f);
+			SlowRateManager->SetSlowRate(PLSPEED, 1.0f);
+			SlowRateManager->SetSlowRate(WORLDSLOWTIME, 1.0f);
 		}
 	}
 	if (timeStopSwitch && !once)
 	{
-		GameTime_SetTime(0, 0.0001f);
-		GameTime_SetTime(1, 9999.958008f);
-		GameTime_SetTime(2, 0.0001f);
-		// GameTime_SetTime(3, 9999.958008f); // RPGs speed, voices, particle, etc.
+		SlowRateManager->SetSlowRate(GAMEWORLDSPEED, 0.0001f);
+		SlowRateManager->SetSlowRate(PLSPEED, 9999.958008f);
+		SlowRateManager->SetSlowRate(WORLDSLOWTIME, 0.0001f);
 	}
 }
 

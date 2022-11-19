@@ -160,7 +160,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="cheat\cheat.h" />
-    <ClInclude Include="enums.h" />
+    <ClInclude Include="game\cSlowRateManager.h" />
+    <ClInclude Include="game\GameFlags.h" />
+    <ClInclude Include="game\GameMenuStatus.h" />
     <ClInclude Include="gui\gui.h" />
     <ClInclude Include="imgui\imconfig.h" />
     <ClInclude Include="imgui\imgui.h" />
@@ -197,6 +199,7 @@
   <ItemGroup>
     <ClCompile Include="cheat\cheat.cpp" />
     <ClCompile Include="dllmain.cpp" />
+    <ClCompile Include="game\cSlowRateManager.cpp" />
     <ClCompile Include="gui\gui.cpp" />
     <ClCompile Include="imgui\imgui.cpp" />
     <ClCompile Include="imgui\imgui_demo.cpp" />
