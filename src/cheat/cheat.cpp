@@ -302,25 +302,23 @@ void cheat::ZangekiTimeStopCheat() noexcept
 // Literally time stop
 void cheat::TimeStop() noexcept
 {
-	static bool once = false;
 	static auto SlowRateManager = GetcSlowRateManager();
 	if (KeyBind::IsKeyPressed(timeStopHotkey) && timeStop && OnFocus && GameMenuStat == InGame)
 	{
 		timeStopSwitch = SlowRateManager->GetSlowRate(GAMEWORLDSPEED) == 1.0f;
 
-		once = !timeStopSwitch;
-		if (!timeStopSwitch && once)
+		if (!timeStopSwitch)
 		{
 			SlowRateManager->SetSlowRate(GAMEWORLDSPEED, 1.0f);
 			SlowRateManager->SetSlowRate(PLSPEED, 1.0f);
 			SlowRateManager->SetSlowRate(WORLDSLOWTIME, 1.0f);
 		}
 	}
-	if (timeStopSwitch && !once)
+	if (timeStopSwitch)
 	{
-		SlowRateManager->SetSlowRate(GAMEWORLDSPEED, 0.0001f);
-		SlowRateManager->SetSlowRate(PLSPEED, 9999.958008f);
-		SlowRateManager->SetSlowRate(WORLDSLOWTIME, 0.0001f);
+		SlowRateManager->SetSlowRate(GAMEWORLDSPEED, 1 * 3.33564095e-9f);
+		SlowRateManager->SetSlowRate(PLSPEED, 1 / 3.33564095e-9f);
+		SlowRateManager->SetSlowRate(WORLDSLOWTIME, 1 * 3.33564095e-9f);
 	}
 }
 
