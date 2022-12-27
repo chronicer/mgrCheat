@@ -1,6 +1,7 @@
 #pragma once
 #include <Windows.h>
 #include <Psapi.h>
+#include "../shared/shared.h"
 
 namespace cheat
 {
@@ -19,13 +20,11 @@ namespace cheat
 	inline bool visorSwitch = false;
 	inline bool autoHpUp = false;
 	inline float ninjarunSpeedRate = 0.0f;
-	inline bool zangekiTimeStop = false;
 	inline bool timeStop = false;
 	inline bool timeStopSwitch = false;
 	inline unsigned int timeStopHotkey = 84;
 	inline bool dealZeroDamage = false;
-	inline DWORD base = (DWORD)GetModuleHandleA(NULL);
-	inline bool OnFocus = false;
+	inline bool &OnFocus = *(bool*)(shared::base + 0x19D509C);
 
 	void HandleCheats() noexcept;
 	void LoadConfig() noexcept;
@@ -42,7 +41,6 @@ namespace cheat
 	void TemporaryVisorCheat() noexcept;
 	void AutoHPUpCheat() noexcept;
 	void NinjaRunSpeedCheat() noexcept;
-	void ZangekiTimeStopCheat() noexcept;
 	void TimeStop() noexcept;
 	void Deal0Damage() noexcept;
 }

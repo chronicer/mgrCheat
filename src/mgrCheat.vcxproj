@@ -113,7 +113,7 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <SupportJustMyCode>false</SupportJustMyCode>
-      <DebugInformationFormat>None</DebugInformationFormat>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -160,9 +160,43 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="cheat\cheat.h" />
+    <ClInclude Include="game\Animation.h" />
+    <ClInclude Include="game\BattleParameter.h" />
+    <ClInclude Include="game\BattleParameterImplement.h" />
+    <ClInclude Include="game\Behavior.h" />
+    <ClInclude Include="game\BehaviorAppBase.h" />
+    <ClInclude Include="game\cEspControler.h" />
+    <ClInclude Include="game\cGameUIManager.h" />
+    <ClInclude Include="game\CharacterControl.h" />
+    <ClInclude Include="game\cItemBase.h" />
+    <ClInclude Include="game\cItemPossessionBase.h" />
+    <ClInclude Include="game\cItemPossessionWeaponGranade.h" />
+    <ClInclude Include="game\cLockonPartsList.h" />
+    <ClInclude Include="game\cMesh.h" />
+    <ClInclude Include="game\cMeshBase.h" />
+    <ClInclude Include="game\cModel.h" />
+    <ClInclude Include="game\cModelBase.h" />
+    <ClInclude Include="game\cObj.h" />
+    <ClInclude Include="game\cParts.h" />
     <ClInclude Include="game\cSlowRateManager.h" />
+    <ClInclude Include="game\cSlowRateUnit.h" />
+    <ClInclude Include="game\cVec4.h" />
+    <ClInclude Include="game\cXml.h" />
+    <ClInclude Include="game\cXmlBinary.h" />
+    <ClInclude Include="game\EspCtrlCustomImpl.h" />
     <ClInclude Include="game\GameFlags.h" />
     <ClInclude Include="game\GameMenuStatus.h" />
+    <ClInclude Include="game\GameplayFlags.h" />
+    <ClInclude Include="game\hkBaseObject.h" />
+    <ClInclude Include="game\hkpEntity.h" />
+    <ClInclude Include="game\hkpRigidBody.h" />
+    <ClInclude Include="game\hkpWorldObject.h" />
+    <ClInclude Include="game\hkReferencedObject.h" />
+    <ClInclude Include="game\Hw.h" />
+    <ClInclude Include="game\ObjectItemsAttached.h" />
+    <ClInclude Include="game\Pl0000.h" />
+    <ClInclude Include="game\PlayerManager.h" />
+    <ClInclude Include="game\PlayerManagerImplement.h" />
     <ClInclude Include="gui\gui.h" />
     <ClInclude Include="imgui\imconfig.h" />
     <ClInclude Include="imgui\imgui.h" />
@@ -195,11 +229,16 @@
     <ClInclude Include="minhook\src\hde\table64.h" />
     <ClInclude Include="minhook\src\trampoline.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="shared\shared.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cheat\cheat.cpp" />
     <ClCompile Include="dllmain.cpp" />
+    <ClCompile Include="game\cGameUIManager.cpp" />
+    <ClCompile Include="game\cObj.cpp" />
     <ClCompile Include="game\cSlowRateManager.cpp" />
+    <ClCompile Include="game\Pl0000.cpp" />
+    <ClCompile Include="game\PlayerManagerImplement.cpp" />
     <ClCompile Include="gui\gui.cpp" />
     <ClCompile Include="imgui\imgui.cpp" />
     <ClCompile Include="imgui\imgui_demo.cpp" />

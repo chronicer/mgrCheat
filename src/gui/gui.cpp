@@ -8,6 +8,8 @@
 #include "../KeyBind.h"
 #include "../kiero.h"
 #include "../minhook/include/MinHook.h"
+#include "../game/cGameUIManager.h"
+#include "../game/Pl0000.h"
 
 #include "../imgui/imgui.h"
 #include "../imgui/imgui_impl_win32.h"
@@ -52,10 +54,9 @@ void gui::RenderGUI() noexcept
 				ImGui::Checkbox("Auto HP Up", &cheat::autoHpUp);
 				if (ImGui::InputFloat("Ninja Run Speed Rate", &cheat::ninjarunSpeedRate))
 				{
-					DWORD player = injector::ReadMemory<DWORD>(cheat::base + 0x19C1490);
-					injector::WriteMemory<float>(player + 0x53E0, cheat::ninjarunSpeedRate);
+					Pl0000* player = (Pl0000*)g_cGameUIManager.m_pPl;
+					player->m_fNinjaRunSpeedRate = cheat::ninjarunSpeedRate;
 				}
-				ImGui::Checkbox("Zangeki Time Stop", &cheat::zangekiTimeStop);
 				ImGui::EndTabItem();		
 			}
 			if (ImGui::BeginTabItem("Entities"))

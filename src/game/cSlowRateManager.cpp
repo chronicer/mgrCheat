@@ -1,55 +1,60 @@
 #include "cSlowRateManager.h"
 
-#include <Windows.h>
-#include "../cheat/cheat.h"
-#include "cSlowRateManager.h"
+cSlowRateManager &g_cSlowRateManager = *(cSlowRateManager*)(shared::base + 0x17E93B0);
+cSlowRateManager* g_pcSlowRateManager = *(cSlowRateManager**)(shared::base + 0x19D9160);
 
-static DWORD base = cheat::base;
-cSlowRateManager& g_pcSlowRateManager = *(cSlowRateManager*)(base + 0x19D9160);
-cSlowRateManager* m_cSlowRateManager = &g_pcSlowRateManager;
-
-void cSlowRateManager::SetSlowRate(SlowRateType SlowType, float SlowTime) noexcept
+void cSlowRateManager_SetSlowRate(int SlowRateType, float SlowRate) noexcept
 {
-	DWORD address = base + 0xA03A70;
-	((void(__thiscall*)(cSlowRateManager*, SlowRateType, float))address)(this, SlowType, SlowTime);
+	DWORD address = shared::base + 0x532020;
+	((void(__cdecl*)(int, float))address)(SlowRateType, SlowRate);
 }
 
 cSlowRateManager* GetcSlowRateManager() noexcept
 {
-	DWORD address = base + 0xA03960;
-	return ((cSlowRateManager * (__stdcall*)())address)();
+	DWORD address = shared::base + 0xA03960;
+	return ((cSlowRateManager *(__cdecl *)())address)();
 }
 
-void cSlowRateManager_SetSlowRate(SlowRateType SlowType, float SlowTime) noexcept
+void cSlowRateManager::SetSlowRate(int SlowRateType, float SlowRate) noexcept
 {
-	DWORD address = base + 0x532020;
-	((void(__cdecl*)(SlowRateType, float))address)(SlowType, SlowTime);
+	DWORD address = shared::base + 0xA03A70;
+	((void(__thiscall*)(cSlowRateManager*, int, float))address)(this, SlowRateType, SlowRate);
 }
 
-void cSlowRateManager_Reset() noexcept
+float cSlowRateManager::GetSlowRate(int SlowRateType) noexcept
 {
-	DWORD address = base + 0x11EDC20;
-	((void(__cdecl*)())address)();
-}
-
-float cSlowRateManager::GetSlowRate(SlowRateType SlowType) noexcept
-{
-	if (SlowType < 4)
-		return this->m_fSlowRate[SlowType].m_fRate;
-	else
-		return 1.0f;
-}
-
-float cSlowRateManager::GetCalculatedSlowRate(SlowRateType SlowType) noexcept
-{
-	if (SlowType < 4)
-		return this->m_fSlowRate[SlowType].m_fCalculatedRate;
+	if (SlowRateType < 4)
+		return this->m_fSlowRate[SlowRateType].m_fRate;
 	else
 		return 1.0f;
 }
 
 void cSlowRateManager::ResetSlowRate() noexcept
 {
-	DWORD address = base + 0xA03B10;
+	DWORD address = shared::base + 0xA03B10;
 	((void(__thiscall*)(cSlowRateManager*))address)(this);
+}
+
+void cSlowRateManager::Cleanup() noexcept
+{
+	DWORD address = shared::base + 0xA08740;
+	((void(__thiscall*)(cSlowRateManager*))address)(this);
+}
+
+void cSlowRateManager_Reset() noexcept
+{
+	DWORD address = shared::base + 0x11EDC20;
+	((void(__cdecl*)())address)();
+}
+
+cSlowRateUnit *cSlowRateManager::AllocUnit() noexcept
+{
+	DWORD address = shared::base + 0xA06230;
+	return ((cSlowRateUnit *(__thiscall *)(cSlowRateManager *))address)(this);
+}
+
+cSlowRateManager::cSlowRateManager() noexcept
+{
+	DWORD address = shared::base + 0xA08FB0;
+	((void (__thiscall *)(cSlowRateManager *))address)(this);
 }
