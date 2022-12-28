@@ -257,7 +257,7 @@ void cheat::NinjaRunSpeedCheat() noexcept
 	if (!player)
 		return;
 
-	ninjarunSpeedRate = player->m_fNinjaRunSpeedRate;
+	ninjaRunSpeedRate = player->m_fNinjaRunSpeedRate;
 }
 
 // Literally time stop
@@ -397,7 +397,7 @@ void cheat::Reset() noexcept
 	temporaryVisorHotkey = 80;
 	visorSwitch = false;
 	autoHpUp = false;
-	ninjarunSpeedRate = 0.0f;
+	ninjaRunSpeedRate = 0.0f;
 	timeStop = false;
 	timeStopHotkey = 84;
 	dealZeroDamage = false;

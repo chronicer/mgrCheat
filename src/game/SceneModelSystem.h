@@ -1,10 +1,7 @@
-#pragma once
-#include "../shared/shared.h"
+#include "ModelSystem.h"
 
-class cGameUIManager
+class SceneModelSystem : public ModelSystem
 {
-protected:
-  void *vtbl;
 public:
   int field_4;
   int field_8;
@@ -29,7 +26,7 @@ public:
   int field_54;
   int field_58;
   int field_5C;
-  void* m_pPl;
+  int field_60;
   int field_64;
   int field_68;
   int field_6C;
@@ -43,23 +40,19 @@ public:
   int field_8C;
   int field_90;
   int field_94;
-  void *m_pPlayer;
+  int field_98;
   int field_9C;
-  float field_A0;
-  float field_A4;
-  float field_A8;
-  float field_AC;
-  float field_B0;
-  float field_B4;
-  float field_B8;
-  float field_BC;
-  int field_C0;
-  int field_C4;
-  int field_C8;
-  int field_CC;
-  int field_D0;
-  int field_D4;
-  int field_D8;
-};
+  int field_A0;
+  int field_A4;
+  int field_A8;
+  int field_AC;
+  int field_B0;
+  int field_B4;
+  int field_B8;
+  int field_BC;
 
-extern cGameUIManager &g_cGameUIManager;
+  SceneModelSystem() noexcept;
+  ~SceneModelSystem() noexcept;
+  void DestroyModel(int a2) noexcept;
+  void CreateModel(int a2, int a3, int a4) noexcept;
+};

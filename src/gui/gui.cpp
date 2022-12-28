@@ -10,6 +10,7 @@
 #include "../minhook/include/MinHook.h"
 #include "../game/cGameUIManager.h"
 #include "../game/Pl0000.h"
+#include "../game/PlayerManagerImplement.h"
 
 #include "../imgui/imgui.h"
 #include "../imgui/imgui_impl_win32.h"
@@ -21,6 +22,8 @@ bool once1 = false;
 // Renders gui for cheats
 void gui::RenderGUI() noexcept
 {
+	Pl0000* player = (Pl0000*)g_cGameUIManager.m_pPl;
+
 	if (!once1)
 	{
 		LoadConfig();
@@ -52,10 +55,10 @@ void gui::RenderGUI() noexcept
 				ImGui::SliderFloat("Height Change Rate", &cheat::heightRate, 0.0f, 100.0f, "%.3f", 1.0f);
 				KeyBind::Hotkey("Visor Hotkey: ", &cheat::temporaryVisorHotkey);
 				ImGui::Checkbox("Auto HP Up", &cheat::autoHpUp);
-				if (ImGui::InputFloat("Ninja Run Speed Rate", &cheat::ninjarunSpeedRate))
+				if (ImGui::InputFloat("Ninja Run Speed Rate", &cheat::ninjaRunSpeedRate))
 				{
-					Pl0000* player = (Pl0000*)g_cGameUIManager.m_pPl;
-					player->m_fNinjaRunSpeedRate = cheat::ninjarunSpeedRate;
+					if (player)
+						player->m_fNinjaRunSpeedRate = cheat::ninjaRunSpeedRate;
 				}
 				ImGui::EndTabItem();		
 			}

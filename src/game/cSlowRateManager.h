@@ -1,6 +1,5 @@
 #pragma once
 #include "cSlowRateUnit.h"
-#include "../shared/shared.h"
 #include "Hw.h"
 
 class cSlowRateManager
@@ -47,5 +46,5 @@ void cSlowRateManager_Reset() noexcept;
 void cSlowRateManager_SetSlowRate(int SlowRateType, float SlowRate) noexcept;
 cSlowRateManager* GetcSlowRateManager() noexcept;
 
-extern cSlowRateManager* g_pcSlowRateManager;
 extern cSlowRateManager& g_cSlowRateManager;
+extern cSlowRateManager* g_pcSlowRateManager;

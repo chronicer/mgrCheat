@@ -38,4 +38,4 @@ enum GameFlags
   OldRaidenBody = 0x80000000,
 };
 
-unsigned int &g_GameFlags = *(unsigned int*)(shared::base + 0x17EA090);
+unsigned int &g_GameFlags = *(unsigned int *)(shared::base + 0x17EA090);

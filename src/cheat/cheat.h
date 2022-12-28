@@ -2,6 +2,9 @@
 #include <Windows.h>
 #include <Psapi.h>
 #include "../shared/shared.h"
+#include "../game/cGameUIManager.h"
+#include "../game/Pl0000.h"
+#include "../game/PlayerManagerImplement.h"
 
 namespace cheat
 {
@@ -19,7 +22,7 @@ namespace cheat
 	inline unsigned int temporaryVisorHotkey = 80;
 	inline bool visorSwitch = false;
 	inline bool autoHpUp = false;
-	inline float ninjarunSpeedRate = 0.0f;
+	inline float ninjaRunSpeedRate = 0.0f;
 	inline bool timeStop = false;
 	inline bool timeStopSwitch = false;
 	inline unsigned int timeStopHotkey = 84;
