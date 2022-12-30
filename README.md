@@ -19,10 +19,10 @@ To open menu you need to press insert while in game
     
 ## Todo
  - [x] Add least cheats (almost)
- - [ ] Menu Mouse Hook (maybe keep player in pause while setting some cheats?)
+ - [x] Menu Mouse Hook (maybe keep player in pause while setting some cheats?)
  - [x] Maybe some config system? (half of work is done)
  - [x] Bind system (re-bind keys, allowed only one key per bind)
- - [ ] Maybe add different headers and sources files for specific objects in game?
+ - [x] Maybe add different headers and sources files for specific objects in game?
  - [ ] Re-write entire cheat (since it doesn't show for other but me)
  
 ## Plans
