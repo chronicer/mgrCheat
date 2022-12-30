@@ -1,10 +1,7 @@
 #pragma once
 #include <Windows.h>
 #include <Psapi.h>
-#include "../shared/shared.h"
-#include "../game/cGameUIManager.h"
-#include "../game/Pl0000.h"
-#include "../game/PlayerManagerImplement.h"
+#include "shared.h"
 
 namespace cheat
 {

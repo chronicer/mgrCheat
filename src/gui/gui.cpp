@@ -8,9 +8,10 @@
 #include "../KeyBind.h"
 #include "../kiero.h"
 #include "../minhook/include/MinHook.h"
-#include "../game/cGameUIManager.h"
-#include "../game/Pl0000.h"
-#include "../game/PlayerManagerImplement.h"
+
+#include "Pl0000.h"
+#include "cGameUIManager.h"
+#include "GameMenuStatus.h"
 
 #include "../imgui/imgui.h"
 #include "../imgui/imgui_impl_win32.h"
@@ -30,8 +31,22 @@ void gui::RenderGUI() noexcept
 		once1 = true;
 	}
 
+	static bool paused = false;
+
 	if ((KeyBind::IsKeyPressed(menuKey) & 1) && cheat::OnFocus)
 		show = !show;
+
+	if (show)
+	{
+		*(unsigned int*)(shared::base + 0x17EA060) |= 0x1000;
+		paused = true;
+	}
+
+	if (!show && paused && g_GameMenuStatus == InGame)
+	{
+		*(unsigned int*)(shared::base + 0x17EA060) &= ~0x1000;
+		paused = false;
+	}
 
 	ImGui_ImplDX9_NewFrame();
 	ImGui_ImplWin32_NewFrame();
@@ -59,6 +74,26 @@ void gui::RenderGUI() noexcept
 				{
 					if (player)
 						player->m_fNinjaRunSpeedRate = cheat::ninjaRunSpeedRate;
+				}
+				if (ImGui::Button("Toggle ripper mode"))
+				{
+					if (player)
+						if (player->m_nRipperModeEnabled)
+							player->DisableRipperMode(false);
+						else
+							player->EnableRipperMode();
+				}
+				if (ImGui::Button("Enable ripper mode effect"))
+				{
+					static bool ripperModeEffectSwitch = false;
+					if (player)
+					{
+						ripperModeEffectSwitch = !ripperModeEffectSwitch;
+						if (ripperModeEffectSwitch)
+							player->CallEffect(100, &player->field_3470);
+						else
+							player->field_3470.SetEffectDuration(0.1f, 0.0f);
+					}
 				}
 				ImGui::EndTabItem();		
 			}

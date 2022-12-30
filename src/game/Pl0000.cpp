@@ -60,3 +60,9 @@ bool Pl0000::IsInAir() noexcept
     DWORD address = shared::base + 0x77C730;
     return ((bool (__thiscall *)(Pl0000 *))address)(this);
 }
+
+void Pl0000::CallEffect(int effectId, cEspControler* espControler)
+{
+    DWORD address = shared::base + 0x7C3470;
+    ((void(__thiscall*)(Pl0000*, int, cEspControler*))address)(this, effectId, espControler);
+}

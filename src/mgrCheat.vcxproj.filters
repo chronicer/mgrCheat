@@ -114,28 +114,13 @@
     <ClInclude Include="impl\shared.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="game\GameMenuStatus.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="game\cSlowRateManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="game\GameFlags.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="game\cSlowRateUnit.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="game\Hw.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="shared\shared.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="game\GameplayFlags.h">
+    <ClInclude Include="game\Animation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="game\Animation.h">
+    <ClInclude Include="game\ARGB32.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="game\BattleParameter.h">
@@ -189,6 +174,12 @@
     <ClInclude Include="game\cParts.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="game\cSlowRateManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="game\cSlowRateUnit.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="game\cVec4.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -198,7 +189,19 @@
     <ClInclude Include="game\cXmlBinary.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="game\EntityHandle.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="game\EspCtrlCustomImpl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="game\GameFlags.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="game\GameMenuStatus.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="game\GameplayFlags.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="game\hkBaseObject.h">
@@ -216,34 +219,31 @@
     <ClInclude Include="game\hkReferencedObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="game\ObjectItemsAttached.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="game\Pl0000.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="game\PlayerManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="game\PlayerManagerImplement.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="game\ARGB32.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="game\EntityHandle.h">
+    <ClInclude Include="game\Hw.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="game\ModelSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="game\ObjectItemsAttached.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="game\PhaseManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="game\Pl0000.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="game\Pl1400.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="game\Pl1500.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="game\PlayerManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="game\PlayerManagerImplement.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="game\PlBaseDLC.h">
@@ -311,25 +311,19 @@
     <ClCompile Include="impl\shared.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="game\cSlowRateManager.cpp">
+    <ClCompile Include="game\Behavior.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="game\cObj.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="game\Pl0000.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="game\PlayerManagerImplement.cpp">
+    <ClCompile Include="game\BehaviorAppBase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="game\cGameUIManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="game\Behavior.cpp">
+    <ClCompile Include="game\cObj.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="game\BehaviorAppBase.cpp">
+    <ClCompile Include="game\cSlowRateManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="game\cVec4.cpp">
@@ -341,7 +335,16 @@
     <ClCompile Include="game\PhaseManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="game\Pl0000.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="game\PlayerManagerImplement.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="game\SceneModelSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="game\cEspControler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

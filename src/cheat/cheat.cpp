@@ -2,12 +2,12 @@
 #include "../injector/injector.hpp"
 #include "../IniReader.h"
 #include "../KeyBind.h"
-#include "../game/cSlowRateManager.h"
-#include "../game/GameFlags.h"
-#include "../game/GameMenuStatus.h"
-#include "../game/GameplayFlags.h"
-#include "../game/Pl0000.h"
-#include "../game/cGameUIManager.h"
+#include "cSlowRateManager.h"
+#include "GameFlags.h"
+#include "GameMenuStatus.h"
+#include "GameplayFlags.h"
+#include "Pl0000.h"
+#include "cGameUIManager.h"
 
 /* TODO #
 *  Make functions for each cheat instead (since return will cancel the handle cheats instead of if condition  
@@ -263,7 +263,7 @@ void cheat::NinjaRunSpeedCheat() noexcept
 // Literally time stop
 void cheat::TimeStop() noexcept
 {
-	static auto SlowRateManager = GetcSlowRateManager();
+	static cSlowRateManager* SlowRateManager = GetcSlowRateManager();
 	if (KeyBind::IsKeyPressed(timeStopHotkey) && timeStop && OnFocus && g_GameMenuStatus == InGame)
 	{
 		timeStopSwitch = SlowRateManager->GetSlowRate(0) == 1.0f;
