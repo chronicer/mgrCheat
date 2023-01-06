@@ -33,10 +33,10 @@ void gui::RenderGUI() noexcept
 
 	static bool paused = false;
 
-	if ((KeyBind::IsKeyPressed(menuKey) & 1) && cheat::OnFocus)
+	if (KeyBind::IsKeyPressed(menuKey) && cheat::OnFocus)
 		show = !show;
 
-	if (show && g_GameMenuStatus != (InMenu))
+	if (show && g_GameMenuStatus == InGame)
 	{
 		*(unsigned int*)(shared::base + 0x17EA060) |= 0x1000;
 		paused = true;

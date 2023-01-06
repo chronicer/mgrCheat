@@ -310,7 +310,13 @@ void cheat::Deal0Damage() noexcept
 
 void cheat::InfVRTimer() noexcept
 {
-	unsigned char original[6] = { 0xD9, 0x05, 0x04, 0x62, 0x6E, 0x02 };
+	static bool readOnce = false;
+	static unsigned char original[6];
+	if (!readOnce)
+	{
+		injector::ReadMemoryRaw(shared::base + 0x81B440, original, 6, true);
+		readOnce = true;
+	}
 	static bool once = false;
 	if (infTimer && !once)
 	{
