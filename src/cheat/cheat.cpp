@@ -17,6 +17,7 @@ DWORD OneHitKillCaveExit = shared::base + 0x68EE3A;
 DWORD InfiniteRocketsCaveExit = shared::base + 0x5499F9;
 DWORD InfiniteGrenadeCaveExit = shared::base + 0x54D8D6;
 DWORD GroundCheatCaveExit = shared::base + 0xE6B464;
+DWORD VRTimerCaveExit = shared::base + 0x81B44A;
 
 void __declspec(naked) OneHitKillCave() noexcept
 {
@@ -66,7 +67,15 @@ void __declspec(naked) GroundCheatCave()
 	}
 }
 
+float vrTimer = 0.10f;
 
+void __declspec(naked) InfiniteVRTimerCave() noexcept
+{
+	__asm {
+		fld dword ptr [vrTimer]
+		jmp VRTimerCaveExit
+	}
+}
 
 // Infinite fuel container
 void cheat::MugenZangekiCheat() noexcept
@@ -299,6 +308,23 @@ void cheat::Deal0Damage() noexcept
 	}
 }
 
+void cheat::InfVRTimer() noexcept
+{
+	unsigned char original[6] = { 0xD9, 0x05, 0x04, 0x62, 0x6E, 0x02 };
+	static bool once = false;
+	if (infTimer && !once)
+	{
+		injector::MakeNOP(shared::base + 0x81B440, 6, true);
+		injector::MakeJMP(shared::base + 0x81B440, &InfiniteVRTimerCave, true);
+		once = true;
+	}
+	else if (!infTimer && once)
+	{
+		injector::WriteMemoryRaw(shared::base + 0x81B440, original, 6, true);
+		once = false;
+	}
+}
+
 // Handles all cheats at once
 void cheat::HandleCheats() noexcept
 {
@@ -325,6 +351,7 @@ void cheat::HandleCheats() noexcept
 	// Battle
 	NoDamageStatCheat();
 	StealthCheat();
+	InfVRTimer();
 	
 	// Entities
 	GroundCheat();
@@ -353,6 +380,7 @@ void cheat::LoadConfig() noexcept
 
 	noDamageStat = iniReader.ReadInteger("Battle", "NoDamageStat", 0) == 1;
 	stealth = iniReader.ReadInteger("Battle", "Stealth", 0) == 1;
+	infTimer = iniReader.ReadInteger("Battle", "InfiniteTimer", 0) == 1;
 }
 
 // Saves config (ini file)
@@ -378,6 +406,7 @@ void cheat::SaveConfig() noexcept
 
 	iniReader.WriteInteger("Battle", "NoDamageStat", noDamageStat);
 	iniReader.WriteInteger("Battle", "Stealth", stealth);
+	iniReader.WriteInteger("Battle", "InfiniteTimer", infTimer);
 }
 
 // Resets cheats
@@ -401,4 +430,5 @@ void cheat::Reset() noexcept
 	timeStop = false;
 	timeStopHotkey = 84;
 	dealZeroDamage = false;
+	infTimer = false;
 }

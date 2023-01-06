@@ -25,6 +25,7 @@ namespace cheat
 	inline unsigned int timeStopHotkey = 84;
 	inline bool dealZeroDamage = false;
 	inline bool &OnFocus = *(bool*)(shared::base + 0x19D509C);
+	inline bool infTimer = false;
 
 	void HandleCheats() noexcept;
 	void LoadConfig() noexcept;
@@ -43,4 +44,5 @@ namespace cheat
 	void NinjaRunSpeedCheat() noexcept;
 	void TimeStop() noexcept;
 	void Deal0Damage() noexcept;
+	void InfVRTimer() noexcept;
 }

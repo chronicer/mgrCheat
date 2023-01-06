@@ -36,7 +36,7 @@ void gui::RenderGUI() noexcept
 	if ((KeyBind::IsKeyPressed(menuKey) & 1) && cheat::OnFocus)
 		show = !show;
 
-	if (show)
+	if (show && g_GameMenuStatus != (InMenu))
 	{
 		*(unsigned int*)(shared::base + 0x17EA060) |= 0x1000;
 		paused = true;
@@ -117,6 +117,7 @@ void gui::RenderGUI() noexcept
 			{
 				ImGui::Checkbox("No Damage Status for battle", &cheat::noDamageStat);
 				ImGui::Checkbox("Stealth Cheat", &cheat::stealth);
+				ImGui::Checkbox("Infinite battle/VR timer", &cheat::infTimer);
 				ImGui::EndTabItem();
 			}
 			if (ImGui::BeginTabItem("Menu"))
