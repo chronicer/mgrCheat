@@ -48,6 +48,9 @@ void gui::RenderGUI() noexcept
 		paused = false;
 	}
 
+	if (!show)
+		Sleep(20);
+
 	ImGui_ImplDX9_NewFrame();
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
