@@ -14,6 +14,7 @@ Metal Gear Rising Revengeance Cheat
     - Auto hp up(i.e regeneration)
     - Deal 0 damage
     - Time stop (press T and time will be frozen)
+    - Infinite battle/VR timer
     
 To open menu you need to press insert while in game
     
@@ -23,7 +24,6 @@ To open menu you need to press insert while in game
  - [x] Maybe some config system? (half of work is done)
  - [x] Bind system (re-bind keys, allowed only one key per bind)
  - [x] Maybe add different headers and sources files for specific objects in game?
- - [ ] Re-write entire cheat (since it doesn't show for other but me)
  
 ## Plans
 Make plugin sdk so people can use it as main source of modding?
