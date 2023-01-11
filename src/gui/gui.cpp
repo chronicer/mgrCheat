@@ -9,9 +9,10 @@
 #include "../kiero.h"
 #include "../minhook/include/MinHook.h"
 
-#include "Pl0000.h"
-#include "cGameUIManager.h"
-#include "GameMenuStatus.h"
+#include <Pl0000.h>
+#include <cGameUIManager.h>
+#include <GameMenuStatus.h>
+#include <PlayerManagerImplement.h>
 
 #include "../imgui/imgui.h"
 #include "../imgui/imgui_impl_win32.h"
@@ -60,7 +61,7 @@ void gui::RenderGUI() noexcept
 	if (show)
 	{
 		ImGui::Begin("Cheat Menu", NULL, ImGuiWindowFlags_NoCollapse);
-		ImGui::SetWindowSize({width, height});
+		ImGui::SetNextWindowSize({width, height});
 		ImGuiIO io = ImGui::GetIO();
 		io.MouseDrawCursor = true;
 		io.ConfigFlags |= ImGuiConfigFlags_NoMouseCursorChange;
@@ -100,7 +101,9 @@ void gui::RenderGUI() noexcept
 							player->field_3470.SetEffectDuration(0.1f, 0.0f);
 					}
 				}
-				ImGui::EndTabItem();		
+				if (ImGui::InputInt("Battle points", &cheat::battlePoints, 100, 500) && g_pPlayerManagerImplement)
+						g_pPlayerManagerImplement->m_nBattlePoints = cheat::battlePoints;
+				ImGui::EndTabItem();
 			}
 			if (ImGui::BeginTabItem("Entities"))
 			{

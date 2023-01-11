@@ -3634,5 +3634,6 @@ public:
   bool IsParrying() noexcept;
   bool IsOnGround() noexcept;
   bool IsInAir() noexcept;
-  void CallEffect(int effectId, cEspControler* espControler);
+  void CallEffect(int id, cEspControler *esp) noexcept;
+  int GetMaxHealth() noexcept;
 };

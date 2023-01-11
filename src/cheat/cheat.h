@@ -26,6 +26,7 @@ namespace cheat
 	inline bool dealZeroDamage = false;
 	inline bool &OnFocus = *(bool*)(shared::base + 0x19D509C);
 	inline bool infTimer = false;
+	inline int battlePoints = 0;
 
 	void HandleCheats() noexcept;
 	void LoadConfig() noexcept;
@@ -45,4 +46,5 @@ namespace cheat
 	void TimeStop() noexcept;
 	void Deal0Damage() noexcept;
 	void InfVRTimer() noexcept;
+	void BattlePointsChange() noexcept;
 }

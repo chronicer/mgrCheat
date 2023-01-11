@@ -21,7 +21,7 @@ public:
   float field_38;
   float field_3C;
   cVec4 m_vecPos;
-  cVec4 m_vecPosition;
+  cVec4 m_vecOffset;
   float field_60;
   float field_64;
   float field_68;
@@ -31,10 +31,7 @@ public:
   float field_84;
   float field_88;
   int field_8C;
-  float field_90;
-  float m_fRotation;
-  float field_98;
-  float field_9C;
+  cVec4 m_vecRotation;
   short field_A0;
   short field_A2;
   int field_A4;

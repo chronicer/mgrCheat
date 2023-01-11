@@ -317,6 +317,9 @@
     <ClCompile Include="game\BehaviorAppBase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="game\cEspControler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="game\cGameUIManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -342,9 +345,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="game\SceneModelSystem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="game\cEspControler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -2,12 +2,13 @@
 #include "../injector/injector.hpp"
 #include "../IniReader.h"
 #include "../KeyBind.h"
-#include "cSlowRateManager.h"
-#include "GameFlags.h"
-#include "GameMenuStatus.h"
-#include "GameplayFlags.h"
-#include "Pl0000.h"
-#include "cGameUIManager.h"
+#include <cSlowRateManager.h>
+#include <GameFlags.h>
+#include <GameMenuStatus.h>
+#include <GameplayFlags.h>
+#include <Pl0000.h>
+#include <cGameUIManager.h>
+#include <PlayerManagerImplement.h>
 
 /* TODO #
 *  Make functions for each cheat instead (since return will cancel the handle cheats instead of if condition  
@@ -49,7 +50,7 @@ void __declspec(naked) InfiniteGrenadeCave() noexcept
 	}
 }
 
-void __declspec(naked) GroundCheatCave()
+void __declspec(naked) GroundCheatCave() noexcept
 {
 	__asm {
 			cmp cheat::groundEnabled, 1
@@ -199,9 +200,9 @@ void cheat::HeightChangeCheat() noexcept
 			return;
 
 		if (GetAsyncKeyState(VK_ADD) & 1)
-			player->m_vecPosition.y += heightRate;
+			player->m_vecOffset.y += heightRate;
 		else if (GetAsyncKeyState(VK_SUBTRACT) & 1)
-			player->m_vecPosition.y -= heightRate;
+			player->m_vecOffset.y -= heightRate;
 
 		if (GetAsyncKeyState(VK_ADD) & 0x8000 || GetAsyncKeyState(VK_SUBTRACT) & 0x8000)
 			player->m_vecVelocity.y = 0.0f;
@@ -331,6 +332,15 @@ void cheat::InfVRTimer() noexcept
 	}
 }
 
+void cheat::BattlePointsChange() noexcept
+{
+	auto playerManager = g_pPlayerManagerImplement;
+	if (!playerManager)
+		return;
+
+	battlePoints = playerManager->m_nBattlePoints;
+}
+
 // Handles all cheats at once
 void cheat::HandleCheats() noexcept
 {
@@ -349,6 +359,7 @@ void cheat::HandleCheats() noexcept
 	AutoHPUpCheat();
 	NinjaRunSpeedCheat();
 	TimeStop();
+	BattlePointsChange();
 
 	// Enemies
 	OneHitKillCheat();
