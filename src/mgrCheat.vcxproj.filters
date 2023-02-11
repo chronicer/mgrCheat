@@ -114,9 +114,6 @@
     <ClInclude Include="impl\shared.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="shared\shared.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="game\Animation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -133,6 +130,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="game\BehaviorAppBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="game\cCamera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="game\cCameraApp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="game\cCameraGame.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="game\cCameraViewProj.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="game\cEspControler.h">
@@ -171,6 +180,9 @@
     <ClInclude Include="game\cObj.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="game\common.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="game\cParts.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -187,6 +199,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="game\cXmlBinary.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="game\D3DMATRIX.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="game\D3DXMATRIX.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="game\EntityHandle.h">
@@ -225,9 +243,6 @@
     <ClInclude Include="game\ModelSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="game\ObjectItemsAttached.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="game\PhaseManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -250,6 +265,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="game\SceneModelSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="shared\shared.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -317,6 +335,9 @@
     <ClCompile Include="game\BehaviorAppBase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="game\cCameraGame.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="game\cEspControler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -324,6 +345,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="game\cObj.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="game\common.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="game\cSlowRateManager.cpp">

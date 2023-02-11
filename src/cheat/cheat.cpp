@@ -81,10 +81,7 @@ void __declspec(naked) InfiniteVRTimerCave() noexcept
 // Infinite fuel container
 void cheat::MugenZangekiCheat() noexcept
 {
-	if (infiniteFc)
-		g_GameFlags |= MugenZangeki;
-	else
-		g_GameFlags &= ~MugenZangeki;
+	g_GameFlags.GAME_MUGEN_ZANGEKI = infiniteFc;
 }
 
 // You can't die in game
@@ -199,12 +196,12 @@ void cheat::HeightChangeCheat() noexcept
 		if (!player)
 			return;
 
-		if (GetAsyncKeyState(VK_ADD) & 1)
+		if (shared::IsKeyPressed(VK_ADD, false))
 			player->m_vecOffset.y += heightRate;
-		else if (GetAsyncKeyState(VK_SUBTRACT) & 1)
+		else if (shared::IsKeyPressed(VK_SUBTRACT, false))
 			player->m_vecOffset.y -= heightRate;
 
-		if (GetAsyncKeyState(VK_ADD) & 0x8000 || GetAsyncKeyState(VK_SUBTRACT) & 0x8000)
+		if (shared::IsKeyPressed(VK_SUBTRACT) || shared::IsKeyPressed(VK_ADD))
 			player->m_vecVelocity.y = 0.0f;
 	}
 }
@@ -240,23 +237,13 @@ void cheat::GroundCheat() noexcept
 void cheat::TemporaryVisorCheat() noexcept
 {
 	if (KeyBind::IsKeyPressed(temporaryVisorHotkey) && OnFocus)
-	{
-		bool VisorDisabled = (g_GameplayFlags & GAME_PLAYER_VISOR_ENABLED) == 0;
-
-		if (VisorDisabled)
-			g_GameplayFlags |= GAME_PLAYER_VISOR_ENABLED;
-		else
-			g_GameplayFlags &= ~GAME_PLAYER_VISOR_ENABLED;
-	}
+		g_GameplayFlags.GAME_PLAYER_VISOR_ENABLED ^= true;
 }
 
 // Regenerates health
 void cheat::AutoHPUpCheat() noexcept
 {
-	if (autoHpUp)
-		g_GameFlags |= AutoHPUp;
-	else
-		g_GameFlags &= ~AutoHPUp;
+	g_GameFlags.GAME_AUTO_HPUP = autoHpUp;
 }
 
 // Ninja run speed, you just need to type speed

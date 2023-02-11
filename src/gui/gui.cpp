@@ -102,7 +102,9 @@ void gui::RenderGUI() noexcept
 					}
 				}
 				if (ImGui::InputInt("Battle points", &cheat::battlePoints, 100, 500) && g_pPlayerManagerImplement)
-						g_pPlayerManagerImplement->m_nBattlePoints = cheat::battlePoints;
+					g_pPlayerManagerImplement->m_nBattlePoints = cheat::battlePoints;
+
+				ImGui::InputInt("Battle points in customize menu", &*(int*)(shared::base + 0x177589C), 100, 500);
 				ImGui::EndTabItem();
 			}
 			if (ImGui::BeginTabItem("Entities"))
