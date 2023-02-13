@@ -270,6 +270,18 @@
     <ClInclude Include="shared\shared.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="game\GameWorkManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="game\GameWorkManagerImplement.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="game\StaFlags.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="game\StpFlags.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">

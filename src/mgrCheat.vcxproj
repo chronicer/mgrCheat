@@ -197,6 +197,8 @@
     <ClInclude Include="game\GameFlags.h" />
     <ClInclude Include="game\GameMenuStatus.h" />
     <ClInclude Include="game\GameplayFlags.h" />
+    <ClInclude Include="game\GameWorkManager.h" />
+    <ClInclude Include="game\GameWorkManagerImplement.h" />
     <ClInclude Include="game\hkBaseObject.h" />
     <ClInclude Include="game\hkpEntity.h" />
     <ClInclude Include="game\hkpRigidBody.h" />
@@ -212,6 +214,8 @@
     <ClInclude Include="game\PlayerManagerImplement.h" />
     <ClInclude Include="game\PlBaseDLC.h" />
     <ClInclude Include="game\SceneModelSystem.h" />
+    <ClInclude Include="game\StaFlags.h" />
+    <ClInclude Include="game\StpFlags.h" />
     <ClInclude Include="gui\gui.h" />
     <ClInclude Include="imgui\imconfig.h" />
     <ClInclude Include="imgui\imgui.h" />

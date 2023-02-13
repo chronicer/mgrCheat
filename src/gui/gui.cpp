@@ -13,6 +13,7 @@
 #include <cGameUIManager.h>
 #include <GameMenuStatus.h>
 #include <PlayerManagerImplement.h>
+#include <StaFlags.h>
 
 #include "../imgui/imgui.h"
 #include "../imgui/imgui_impl_win32.h"
@@ -39,13 +40,13 @@ void gui::RenderGUI() noexcept
 
 	if (show && g_GameMenuStatus == InGame)
 	{
-		*(unsigned int*)(shared::base + 0x17EA060) |= 0x1000;
+		g_StaFlags.STA_PAUSE = true;
 		paused = true;
 	}
 
 	if (!show && paused && g_GameMenuStatus == InGame)
 	{
-		*(unsigned int*)(shared::base + 0x17EA060) &= ~0x1000;
+		g_StaFlags.STA_PAUSE = false;
 		paused = false;
 	}
 
