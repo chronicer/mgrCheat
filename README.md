@@ -19,11 +19,9 @@ Metal Gear Rising Revengeance Cheat
 To open menu you need to press insert while in game
     
 ## Todo
- - [x] Add least cheats (almost)
- - [x] Menu Mouse Hook (maybe keep player in pause while setting some cheats?)
- - [x] Maybe some config system? (half of work is done)
+ - [x] Add least cheats
+ - [x] Maybe some config system?
  - [x] Bind system (re-bind keys, allowed only one key per bind)
- - [x] Maybe add different headers and sources files for specific objects in game?
  
 ## Plans
 Make plugin sdk so people can use it as main source of modding?
