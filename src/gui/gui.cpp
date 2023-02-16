@@ -14,6 +14,7 @@
 #include <GameMenuStatus.h>
 #include <PlayerManagerImplement.h>
 #include <StaFlags.h>
+#include <StpFlags.h>
 
 #include "../imgui/imgui.h"
 #include "../imgui/imgui_impl_win32.h"
@@ -40,13 +41,17 @@ void gui::RenderGUI() noexcept
 
 	if (show && g_GameMenuStatus == InGame)
 	{
+		g_StpFlags.STP_UI = true;
 		g_StaFlags.STA_PAUSE = true;
+		g_StpFlags.STP_ESP = true;
 		paused = true;
 	}
 
 	if (!show && paused && g_GameMenuStatus == InGame)
 	{
+		g_StpFlags.STP_UI = false;
 		g_StaFlags.STA_PAUSE = false;
+		g_StpFlags.STP_ESP = false;
 		paused = false;
 	}
 
@@ -77,30 +82,21 @@ void gui::RenderGUI() noexcept
 				ImGui::SliderFloat("Height Change Rate", &cheat::heightRate, 0.0f, 100.0f, "%.3f", 1.0f);
 				KeyBind::Hotkey("Visor Hotkey: ", &cheat::temporaryVisorHotkey);
 				ImGui::Checkbox("Auto HP Up", &cheat::autoHpUp);
-				if (ImGui::InputFloat("Ninja Run Speed Rate", &cheat::ninjaRunSpeedRate))
-				{
-					if (player)
+				if (ImGui::InputFloat("Ninja Run Speed Rate", &cheat::ninjaRunSpeedRate) && player)
 						player->m_fNinjaRunSpeedRate = cheat::ninjaRunSpeedRate;
-				}
-				if (ImGui::Button("Toggle ripper mode"))
-				{
-					if (player)
-						if (player->m_nRipperModeEnabled)
-							player->DisableRipperMode(false);
-						else
-							player->EnableRipperMode();
-				}
-				if (ImGui::Button("Enable ripper mode effect"))
+				if (ImGui::Button("Toggle ripper mode") && player)
+					if (player->m_nRipperModeEnabled)
+						player->DisableRipperMode(false);
+					else
+						player->EnableRipperMode();
+				if (ImGui::Button("Toggle ripper mode effect") && player)
 				{
 					static bool ripperModeEffectSwitch = false;
-					if (player)
-					{
-						ripperModeEffectSwitch = !ripperModeEffectSwitch;
-						if (ripperModeEffectSwitch)
-							player->CallEffect(100, &player->field_3470);
-						else
-							player->field_3470.SetEffectDuration(0.1f, 0.0f);
-					}
+					ripperModeEffectSwitch ^= true;
+					if (ripperModeEffectSwitch && !player->m_nRipperModeEnabled)
+						player->CallEffect(100, &player->field_3470);
+					else
+						player->field_3470.SetEffectDuration(0.1f, 0.0f);
 				}
 				if (ImGui::InputInt("Battle points", &cheat::battlePoints, 100, 500) && g_pPlayerManagerImplement)
 					g_pPlayerManagerImplement->m_nBattlePoints = cheat::battlePoints;
