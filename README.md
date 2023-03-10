@@ -35,3 +35,7 @@ Install [DirectX9](https://www.microsoft.com/en-us/download/details.aspx?id=35),
 Install asi loader into your game folder, in scripts folder put this .asi mod
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
+
+
+## Releases
+All releases are uploaded to [Nexus](https://www.nexusmods.com/metalgearrisingrevengeance/mods/93), all the code changes you can see here, and probably contribute/compile
