@@ -4,8 +4,6 @@
 
 class cSlowRateManager
 {
-protected:
-  void *vtbl;
 public:
   int field_4;
   int field_8;
@@ -25,7 +23,7 @@ public:
 		float m_fRate;
 		float m_fDefaultRate;
 		float m_fActualRate;
-		float m_fCalculatedRate;
+		float m_fSlowRateTick;
 	} m_fSlowRate[4];
   float m_fTickRate;
   float m_fTicks;
@@ -34,17 +32,20 @@ public:
   float field_8C;
   float field_90;
 
-  cSlowRateManager() noexcept;
-  void SetSlowRate(int SlowRateType, float SlowRate) noexcept;
-  float GetSlowRate(int SlowRateType) noexcept;
-  void ResetSlowRate() noexcept;
-  void Cleanup() noexcept;
-  cSlowRateUnit *AllocUnit() noexcept;
+  virtual ~cSlowRateManager() {};
+  cSlowRateManager();
+  void SetSlowRate(int SlowRateType, float SlowRate);
+  float GetSlowRate(int SlowRateType);
+  void ResetSlowRate();
+  void Cleanup();
+  float GetCalculatedRate(int type);
+  cSlowRateUnit *AllocUnit();
 };
 
-void cSlowRateManager_Reset() noexcept;
-void cSlowRateManager_SetSlowRate(int SlowRateType, float SlowRate) noexcept;
-cSlowRateManager* GetcSlowRateManager() noexcept;
+void cSlowRateManager_Reset();
+void cSlowRateManager_SetSlowRate(int SlowRateType, float SlowRate);
+float cSlowRateManager_GetTickRate(int type);
+cSlowRateManager* GetcSlowRateManager();
 
 extern cSlowRateManager& g_cSlowRateManager;
 extern cSlowRateManager*& g_pcSlowRateManager;

@@ -27,6 +27,7 @@ namespace cheat
 	inline bool &OnFocus = *(bool*)(shared::base + 0x19D509C);
 	inline bool infTimer = false;
 	inline int battlePoints = 0;
+	inline float playerSlowRate = 0.0f;
 
 	void HandleCheats() noexcept;
 	void LoadConfig() noexcept;
@@ -47,4 +48,5 @@ namespace cheat
 	void Deal0Damage() noexcept;
 	void InfVRTimer() noexcept;
 	void BattlePointsChange() noexcept;
+	void ChangePlayerSlowRate() noexcept;
 }

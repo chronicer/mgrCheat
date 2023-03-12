@@ -5,7 +5,6 @@
 #include <cSlowRateManager.h>
 #include <GameFlags.h>
 #include <GameMenuStatus.h>
-#include <GameplayFlags.h>
 #include <Pl0000.h>
 #include <cGameUIManager.h>
 #include <PlayerManagerImplement.h>
@@ -191,7 +190,7 @@ void cheat::HeightChangeCheat() noexcept
 
 	if (heightChange)
 	{
-		Pl0000* player = (Pl0000*)g_cGameUIManager.m_pPl;
+		Pl0000* player = (Pl0000*)g_cGameUIManager.m_pPlayer;
 
 		if (!player)
 			return;
@@ -237,7 +236,7 @@ void cheat::GroundCheat() noexcept
 void cheat::TemporaryVisorCheat() noexcept
 {
 	if (KeyBind::IsKeyPressed(temporaryVisorHotkey) && OnFocus)
-		g_GameplayFlags.GAME_PLAYER_VISOR_ENABLED ^= true;
+		g_GameFlags.GAME_PLAYER_VISOR_ENABLED ^= true;
 }
 
 // Regenerates health
@@ -249,7 +248,7 @@ void cheat::AutoHPUpCheat() noexcept
 // Ninja run speed, you just need to type speed
 void cheat::NinjaRunSpeedCheat() noexcept
 {
-	Pl0000* player = (Pl0000*)g_cGameUIManager.m_pPl;
+	Pl0000* player = (Pl0000*)g_cGameUIManager.m_pPlayer;
 
 	if (!player)
 		return;
@@ -328,6 +327,16 @@ void cheat::BattlePointsChange() noexcept
 	battlePoints = playerManager->m_nBattlePoints;
 }
 
+void cheat::ChangePlayerSlowRate() noexcept
+{
+	Pl0000* player = (Pl0000*)g_cGameUIManager.m_pPlayer;
+
+	if (!player)
+		return;
+
+	playerSlowRate = player->m_pEntityHandle->m_pSlowRateUnit->m_fCurrentSlowRate;
+}
+
 // Handles all cheats at once
 void cheat::HandleCheats() noexcept
 {
@@ -347,6 +356,7 @@ void cheat::HandleCheats() noexcept
 	NinjaRunSpeedCheat();
 	TimeStop();
 	BattlePointsChange();
+	ChangePlayerSlowRate();
 
 	// Enemies
 	OneHitKillCheat();
@@ -364,7 +374,7 @@ void cheat::HandleCheats() noexcept
 // Loads config (ini file)
 void cheat::LoadConfig() noexcept
 {
-	CIniReader iniReader("CheatMenu.ini");
+	CIniReader iniReader("ModMenu.ini");
 
 	infiniteFc = iniReader.ReadInteger("Player", "InfFuelContainer", 0) == 1;
 	infiniteHealth = iniReader.ReadInteger("Player", "InfHealth", 0) == 1;
@@ -390,7 +400,7 @@ void cheat::LoadConfig() noexcept
 // Saves config (ini file)
 void cheat::SaveConfig() noexcept
 {
-	CIniReader iniReader("CheatMenu.ini");
+	CIniReader iniReader("ModMenu.ini");
 
 	iniReader.WriteInteger("Player", "InfFuelContainer", infiniteFc);
 	iniReader.WriteInteger("Player", "InfHealth", infiniteHealth);
@@ -435,4 +445,5 @@ void cheat::Reset() noexcept
 	timeStopHotkey = 84;
 	dealZeroDamage = false;
 	infTimer = false;
+	playerSlowRate = 0.0f;
 }

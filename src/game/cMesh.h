@@ -4,5 +4,6 @@
 class cMesh : public cMeshBase
 {
 public:
-        
+
+    virtual ~cMesh() override {};
 };

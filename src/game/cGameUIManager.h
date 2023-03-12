@@ -6,8 +6,6 @@
 
 class cGameUIManager
 {
-protected:
-  void *vtbl;
 public:
   int field_4;
   int field_8;
@@ -32,21 +30,9 @@ public:
   int field_54;
   int field_58;
   int field_5C;
-  void* m_pPl;
-  int field_64;
-  int field_68;
-  int field_6C;
-  int field_70;
-  int field_74;
-  int field_78;
-  int field_7C;
-  int field_80;
-  int field_84;
-  int field_88;
-  int field_8C;
-  int field_90;
-  int field_94;
-  void *m_pPlayer;
+  void* m_pPlayer;
+  cParts* m_pPlayerParts[13];
+  void *m_pPlayerInstance;
   int m_nPlayerEntityHandle;
   float field_A0;
   float field_A4;
@@ -63,6 +49,8 @@ public:
   int field_D0;
   int field_D4;
   int field_D8;
+
+  virtual ~cGameUIManager() {};
 };
 
 extern cGameUIManager& g_cGameUIManager;

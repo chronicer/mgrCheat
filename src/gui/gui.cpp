@@ -26,7 +26,7 @@ bool once1 = false;
 // Renders gui for cheats
 void gui::RenderGUI() noexcept
 {
-	Pl0000* player = (Pl0000*)g_cGameUIManager.m_pPl;
+	Pl0000* player = (Pl0000*)g_cGameUIManager.m_pPlayer;
 
 	if (!once1)
 	{
@@ -44,6 +44,7 @@ void gui::RenderGUI() noexcept
 		g_StpFlags.STP_UI = true;
 		g_StaFlags.STA_PAUSE = true;
 		g_StpFlags.STP_ESP = true;
+		g_StpFlags.STP_GAME_UPDATE = true;
 		paused = true;
 	}
 
@@ -52,6 +53,7 @@ void gui::RenderGUI() noexcept
 		g_StpFlags.STP_UI = false;
 		g_StaFlags.STA_PAUSE = false;
 		g_StpFlags.STP_ESP = false;
+		g_StpFlags.STP_GAME_UPDATE = false;
 		paused = false;
 	}
 
@@ -66,7 +68,7 @@ void gui::RenderGUI() noexcept
 
 	if (show)
 	{
-		ImGui::Begin("Cheat Menu", NULL, ImGuiWindowFlags_NoCollapse);
+		ImGui::Begin("Mod Menu", NULL, ImGuiWindowFlags_NoCollapse);
 		ImGui::SetNextWindowSize({width, height});
 		ImGuiIO io = ImGui::GetIO();
 		io.MouseDrawCursor = true;
@@ -102,6 +104,9 @@ void gui::RenderGUI() noexcept
 					g_pPlayerManagerImplement->m_nBattlePoints = cheat::battlePoints;
 
 				ImGui::InputInt("Battle points in customize menu", &*(int*)(shared::base + 0x177589C), 100, 500);
+				if (ImGui::InputFloat("Player speed", &cheat::playerSlowRate) && player)
+					player->m_pEntityHandle->m_pSlowRateUnit->m_fCurrentSlowRate = cheat::playerSlowRate;
+
 				ImGui::EndTabItem();
 			}
 			if (ImGui::BeginTabItem("Entities"))
@@ -163,7 +168,7 @@ void gui::RenderGUI() noexcept
 // Currently saves only menu hotkey
 void gui::SaveConfig() noexcept
 {
-	CIniReader iniReader("CheatMenu.ini");
+	CIniReader iniReader("ModMenu.ini");
 
 	iniReader.WriteInteger("Menu", "OpenMenuHotkey", menuKey);
 }
@@ -171,7 +176,7 @@ void gui::SaveConfig() noexcept
 // Loads only hotkey variable
 void gui::LoadConfig() noexcept
 {
-	CIniReader iniReader("CheatMenu.ini");
+	CIniReader iniReader("ModMenu.ini");
 
 	menuKey = iniReader.ReadInteger("Menu", "OpenMenuHotkey", 45);
 }

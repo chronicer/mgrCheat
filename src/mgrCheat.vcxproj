@@ -205,6 +205,7 @@
     <ClInclude Include="game\hkpWorldObject.h" />
     <ClInclude Include="game\hkReferencedObject.h" />
     <ClInclude Include="game\Hw.h" />
+    <ClInclude Include="game\lib.h" />
     <ClInclude Include="game\ModelSystem.h" />
     <ClInclude Include="game\PhaseManager.h" />
     <ClInclude Include="game\Pl0000.h" />
@@ -216,6 +217,7 @@
     <ClInclude Include="game\SceneModelSystem.h" />
     <ClInclude Include="game\StaFlags.h" />
     <ClInclude Include="game\StpFlags.h" />
+    <ClInclude Include="game\Trigger.h" />
     <ClInclude Include="gui\gui.h" />
     <ClInclude Include="imgui\imconfig.h" />
     <ClInclude Include="imgui\imgui.h" />
@@ -267,6 +269,7 @@
     <ClCompile Include="game\Pl0000.cpp" />
     <ClCompile Include="game\PlayerManagerImplement.cpp" />
     <ClCompile Include="game\SceneModelSystem.cpp" />
+    <ClCompile Include="game\Trigger.cpp" />
     <ClCompile Include="gui\gui.cpp" />
     <ClCompile Include="imgui\imgui.cpp" />
     <ClCompile Include="imgui\imgui_demo.cpp" />
