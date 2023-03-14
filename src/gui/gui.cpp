@@ -44,7 +44,6 @@ void gui::RenderGUI() noexcept
 		g_StpFlags.STP_UI = true;
 		g_StaFlags.STA_PAUSE = true;
 		g_StpFlags.STP_ESP = true;
-		g_StpFlags.STP_GAME_UPDATE = true;
 		paused = true;
 	}
 
@@ -53,7 +52,6 @@ void gui::RenderGUI() noexcept
 		g_StpFlags.STP_UI = false;
 		g_StaFlags.STA_PAUSE = false;
 		g_StpFlags.STP_ESP = false;
-		g_StpFlags.STP_GAME_UPDATE = false;
 		paused = false;
 	}
 
@@ -61,6 +59,8 @@ void gui::RenderGUI() noexcept
 	if (!show)
 		Sleep(20);
 	*/
+	if (!show)
+		g_StpFlags.STP_GAME_UPDATE = false;
 
 	ImGui_ImplDX9_NewFrame();
 	ImGui_ImplWin32_NewFrame();
@@ -68,6 +68,7 @@ void gui::RenderGUI() noexcept
 
 	if (show)
 	{
+		g_StpFlags.STP_GAME_UPDATE = true;
 		ImGui::Begin("Mod Menu", NULL, ImGuiWindowFlags_NoCollapse);
 		ImGui::SetNextWindowSize({width, height});
 		ImGuiIO io = ImGui::GetIO();

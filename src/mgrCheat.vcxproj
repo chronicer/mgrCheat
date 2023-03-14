@@ -22,9 +22,9 @@
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
     <ProjectGuid>{0e8ddd20-fb3a-4cd7-960d-45b6e5c781fd}</ProjectGuid>
-    <RootNamespace>mgrCheat</RootNamespace>
+    <RootNamespace>MGRModMenu</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.22000.0</WindowsTargetPlatformVersion>
-    <ProjectName>mgrCheat</ProjectName>
+    <ProjectName>MGRModMenu</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
