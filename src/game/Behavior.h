@@ -6,6 +6,9 @@
 #include "BattleParameterImplement.h"
 #include "EspCtrlCustomImpl.h"
 #include "CharacterControl.h"
+#include "lib.h"
+#include "StateMachineContextPl0010.h"
+#include "StateMachineFactoryPl0010.h"
 
 class Behavior : public cObj
 {
@@ -154,9 +157,9 @@ public:
   int field_78C;
   int field_790;
   int field_794;
-  EspCtrlCustomImpl *field_798;
+  EspCtrlCustomImpl *m_pEspCtrlCustomImpl;
   int field_79C;
-  int m_pEffectIntegrationContainer;
+  void *m_pEffectIntegrationContainer;
   int field_7A4;
   int field_7A8;
   int field_7AC;
@@ -165,11 +168,11 @@ public:
   int field_7B8;
   int field_7BC;
   float field_7C0;
-  int field_7C4;
+  int m_pContraints;
   int field_7C8;
   int field_7CC;
-  int field_7D0;
-  int field_7D4;
+  StateMachineContextPl0010 *m_pStateMachineContext;
+  StateMachineFactoryPl0010 *m_pStateMachineFactory;
   int field_7D8;
   int field_7DC;
   int field_7E0;
@@ -214,3 +217,5 @@ public:
   virtual ~Behavior() override {};
   void Startup();
 };
+
+VALIDATE_SIZE(Behavior, 0x870);

@@ -19,7 +19,7 @@ namespace cheat
 	inline unsigned int temporaryVisorHotkey = 80;
 	inline bool visorSwitch = false;
 	inline bool autoHpUp = false;
-	inline float ninjaRunSpeedRate = 0.0f;
+	inline float ninjaRunSpeedRate = 0.9f;
 	inline bool timeStop = false;
 	inline bool timeStopSwitch = false;
 	inline unsigned int timeStopHotkey = 84;
@@ -27,7 +27,7 @@ namespace cheat
 	inline bool &OnFocus = *(bool*)(shared::base + 0x19D509C);
 	inline bool infTimer = false;
 	inline int battlePoints = 0;
-	inline float playerSlowRate = 0.0f;
+	inline float playerSlowRate = 1.0f;
 
 	void HandleCheats() noexcept;
 	void LoadConfig() noexcept;

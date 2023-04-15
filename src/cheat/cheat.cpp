@@ -3,7 +3,7 @@
 #include "../IniReader.h"
 #include "../KeyBind.h"
 #include <cSlowRateManager.h>
-#include <GameFlags.h>
+#include <Trigger.h>
 #include <GameMenuStatus.h>
 #include <Pl0000.h>
 #include <cGameUIManager.h>
@@ -80,7 +80,7 @@ void __declspec(naked) InfiniteVRTimerCave() noexcept
 // Infinite fuel container
 void cheat::MugenZangekiCheat() noexcept
 {
-	g_GameFlags.GAME_MUGEN_ZANGEKI = infiniteFc;
+	Trigger::GameFlags.GAME_MUGEN_ZANGEKI = infiniteFc;
 }
 
 // You can't die in game
@@ -195,13 +195,16 @@ void cheat::HeightChangeCheat() noexcept
 		if (!player)
 			return;
 
-		if (shared::IsKeyPressed(VK_ADD, false))
+		if (shared::IsKeyPressed(VK_ADD, VK_ADD, false))
 			player->m_vecOffset.y += heightRate;
-		else if (shared::IsKeyPressed(VK_SUBTRACT, false))
+		else if (shared::IsKeyPressed(VK_SUBTRACT, VK_SUBTRACT, false))
 			player->m_vecOffset.y -= heightRate;
 
 		if (shared::IsKeyPressed(VK_SUBTRACT) || shared::IsKeyPressed(VK_ADD))
+		{
+			player->m_pCharacterControl->m_nOnGroundState = 2;
 			player->m_vecVelocity.y = 0.0f;
+		}
 	}
 }
 
@@ -236,13 +239,13 @@ void cheat::GroundCheat() noexcept
 void cheat::TemporaryVisorCheat() noexcept
 {
 	if (KeyBind::IsKeyPressed(temporaryVisorHotkey) && OnFocus)
-		g_GameFlags.GAME_PLAYER_VISOR_ENABLED ^= true;
+		Trigger::GameFlags.GAME_PLAYER_VISOR_ENABLED ^= true;
 }
 
 // Regenerates health
 void cheat::AutoHPUpCheat() noexcept
 {
-	g_GameFlags.GAME_AUTO_HPUP = autoHpUp;
+	Trigger::GameFlags.GAME_AUTO_HPUP = autoHpUp;
 }
 
 // Ninja run speed, you just need to type speed
@@ -334,7 +337,7 @@ void cheat::ChangePlayerSlowRate() noexcept
 	if (!player)
 		return;
 
-	playerSlowRate = player->m_pEntityHandle->m_pSlowRateUnit->m_fCurrentSlowRate;
+	playerSlowRate = player->m_pEntity->m_pSlowRateUnit->m_fCurrentSlowRate;
 }
 
 // Handles all cheats at once
@@ -383,7 +386,7 @@ void cheat::LoadConfig() noexcept
 	heightRate = iniReader.ReadFloat("Player", "HeightRate", 0.0f);
 	temporaryVisorHotkey = iniReader.ReadInteger("Player", "VisorHotkey", 80);
 	autoHpUp = iniReader.ReadInteger("Player", "AutoHpUp", 0) == 1;
-	dealZeroDamage = iniReader.ReadInteger("Player", "DeakZeroDamage", 0) == 1;
+	dealZeroDamage = iniReader.ReadInteger("Player", "DealZeroDamage", 0) == 1;
 
 	timeStop = iniReader.ReadInteger("Entities", "TimeStop", 0) == 1;
 	timeStopHotkey = iniReader.ReadInteger("Entities", "TimeStopHotkey", 84);
@@ -440,10 +443,10 @@ void cheat::Reset() noexcept
 	temporaryVisorHotkey = 80;
 	visorSwitch = false;
 	autoHpUp = false;
-	ninjaRunSpeedRate = 0.0f;
+	ninjaRunSpeedRate = 0.9f;
 	timeStop = false;
 	timeStopHotkey = 84;
 	dealZeroDamage = false;
 	infTimer = false;
-	playerSlowRate = 0.0f;
+	playerSlowRate = 1.0f;
 }

@@ -13,8 +13,7 @@
 #include <cGameUIManager.h>
 #include <GameMenuStatus.h>
 #include <PlayerManagerImplement.h>
-#include <StaFlags.h>
-#include <StpFlags.h>
+#include <Trigger.h>
 
 #include "../imgui/imgui.h"
 #include "../imgui/imgui_impl_win32.h"
@@ -41,17 +40,13 @@ void gui::RenderGUI() noexcept
 
 	if (show && g_GameMenuStatus == InGame)
 	{
-		g_StpFlags.STP_UI = true;
-		g_StaFlags.STA_PAUSE = true;
-		g_StpFlags.STP_ESP = true;
+		Trigger::StaFlags.STA_PAUSE = true;
 		paused = true;
 	}
 
 	if (!show && paused && g_GameMenuStatus == InGame)
 	{
-		g_StpFlags.STP_UI = false;
-		g_StaFlags.STA_PAUSE = false;
-		g_StpFlags.STP_ESP = false;
+		Trigger::StaFlags.STA_PAUSE = false;
 		paused = false;
 	}
 
@@ -60,7 +55,7 @@ void gui::RenderGUI() noexcept
 		Sleep(20);
 	*/
 	if (!show)
-		g_StpFlags.STP_GAME_UPDATE = false;
+		Trigger::StpFlags.STP_GAME_UPDATE = false;
 
 	ImGui_ImplDX9_NewFrame();
 	ImGui_ImplWin32_NewFrame();
@@ -68,7 +63,7 @@ void gui::RenderGUI() noexcept
 
 	if (show)
 	{
-		g_StpFlags.STP_GAME_UPDATE = true;
+		Trigger::StpFlags.STP_GAME_UPDATE = true;
 		ImGui::Begin("Mod Menu", NULL, ImGuiWindowFlags_NoCollapse);
 		ImGui::SetNextWindowSize({width, height});
 		ImGuiIO io = ImGui::GetIO();
@@ -105,8 +100,11 @@ void gui::RenderGUI() noexcept
 					g_pPlayerManagerImplement->m_nBattlePoints = cheat::battlePoints;
 
 				ImGui::InputInt("Battle points in customize menu", &*(int*)(shared::base + 0x177589C), 100, 500);
-				if (ImGui::InputFloat("Player speed", &cheat::playerSlowRate) && player)
-					player->m_pEntityHandle->m_pSlowRateUnit->m_fCurrentSlowRate = cheat::playerSlowRate;
+				if (player)
+				{
+					ImGui::InputFloat("Player speed", &cheat::playerSlowRate);
+					player->m_pEntity->m_pSlowRateUnit->m_fCurrentSlowRate = cheat::playerSlowRate;
+				}
 
 				ImGui::EndTabItem();
 			}
@@ -154,6 +152,8 @@ void gui::RenderGUI() noexcept
 					cheat::SaveConfig();
 					SaveConfig();
 				}
+				if (ImGui::Button("Donate"))
+					ShellExecute(0, "open", "https://donatello.to/Frouk3", NULL, NULL, 0);
 				ImGui::EndTabItem();
 			}
 			ImGui::EndTabBar();
