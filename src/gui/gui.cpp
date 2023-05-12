@@ -74,7 +74,7 @@ void gui::RenderGUI() noexcept
 	if (show)
 	{
 		if (usesPause) 
-			Trigger::StpFlags.STP_GAME_UPDATE = true;
+			Trigger::StpFlags.STP_GAME_UPDATE = g_GameMenuStatus == 1;
 		ImGui::Begin("Mod Menu", NULL, ImGuiWindowFlags_NoCollapse);
 		ImGui::SetNextWindowSize({width, height});
 		ImGuiIO io = ImGui::GetIO();
@@ -145,13 +145,13 @@ void gui::RenderGUI() noexcept
 			if (ImGui::BeginTabItem("Menu"))
 			{
 				KeyBind::Hotkey("Menu Key: ", &menuKey);
-				if (ImGui::Checkbox("Pause game when shown", &usesPause))
+				if (ImGui::Checkbox("Pause game when shown", &usesPause) && g_GameMenuStatus == InGame)
 				{
-					Trigger::StaFlags.STA_PAUSE = usesPause;
-					Trigger::StpFlags.STP_GAME_UPDATE = usesPause;
-					Trigger::StpFlags.STP_MOUSE_UPDATE = usesPause;
-					Trigger::StpFlags.STP_PL_CAM_KEY = usesPause;
-					Trigger::StpFlags.STP_PL_ATTACK_KEY = usesPause;
+						Trigger::StaFlags.STA_PAUSE = usesPause;
+						Trigger::StpFlags.STP_GAME_UPDATE = usesPause;
+						Trigger::StpFlags.STP_MOUSE_UPDATE = !usesPause;
+						Trigger::StpFlags.STP_PL_CAM_KEY = !usesPause;
+						Trigger::StpFlags.STP_PL_ATTACK_KEY = !usesPause;
 				}
 				if (ImGui::Button("Save Config"))
 				{
