@@ -1,14 +1,12 @@
 #pragma once
 
-#include "ModelSystem.h"
+#include "hkpPhantomListener.h"
+#include "hkpEntityListener.h"
+#include "hkReferencedObject.h"
 
-class SceneModelSystem : public ModelSystem
+class hkpCharacterProxy : public hkReferencedObject, hkpEntityListener, hkpPhantomListener
 {
 public:
-  int field_4;
-  int field_8;
-  int field_C;
-  int field_10;
   int field_14;
   int field_18;
   int field_1C;
@@ -29,16 +27,16 @@ public:
   int field_58;
   int field_5C;
   int field_60;
-  int field_64;
-  int field_68;
+  float field_64;
+  float field_68;
   int field_6C;
   int field_70;
   int field_74;
   int field_78;
   int field_7C;
-  int field_80;
-  int field_84;
-  int field_88;
+  float field_80;
+  float field_84;
+  float field_88;
   int field_8C;
   int field_90;
   int field_94;
@@ -50,13 +48,6 @@ public:
   int field_AC;
   int field_B0;
   int field_B4;
-  int field_B8;
-  int field_BC;
 
-  SceneModelSystem();
-  virtual ~SceneModelSystem() override {};
-  virtual void CreateModel(int a2, int a3, int a4) {}; // unused
-  virtual void Function2(int a2) {};
-  virtual void DestroyModel(int a2) {}; // unused
-  virtual void __stdcall Function4(int a2) {};
+  virtual ~hkpCharacterProxy() override {};
 };

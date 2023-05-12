@@ -6,6 +6,7 @@ namespace gui
 	inline float height = 600.0f;
 	inline unsigned int menuKey = 45;
 	inline bool show = false;
+	inline bool usesPause = true;
 
 	void RenderGUI() noexcept;
 	void LoadConfig() noexcept;

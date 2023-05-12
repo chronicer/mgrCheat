@@ -38,24 +38,34 @@ void gui::RenderGUI() noexcept
 	if (KeyBind::IsKeyPressed(menuKey) && cheat::OnFocus)
 		show = !show;
 
-	if (show && g_GameMenuStatus == InGame)
+	if (usesPause)
 	{
-		Trigger::StaFlags.STA_PAUSE = true;
-		paused = true;
-	}
+		if (show && g_GameMenuStatus == InGame)
+		{
+			Trigger::StaFlags.STA_PAUSE = true;
+			paused = true;
+		}
 
-	if (!show && paused && g_GameMenuStatus == InGame)
+		if (!show && paused && g_GameMenuStatus == InGame)
+		{
+			Trigger::StaFlags.STA_PAUSE = false;
+			paused = false;
+		}
+
+		if (!show)
+			Trigger::StpFlags.STP_GAME_UPDATE = false;
+	}
+	else
 	{
-		Trigger::StaFlags.STA_PAUSE = false;
-		paused = false;
+		Trigger::StpFlags.STP_MOUSE_UPDATE = show && g_GameMenuStatus == InGame;
+		Trigger::StpFlags.STP_PL_CAM_KEY = show && g_GameMenuStatus == InGame;
+		Trigger::StpFlags.STP_PL_ATTACK_KEY = show && g_GameMenuStatus == InGame;
 	}
 
 	/* :: REMOVED, REASON: Its lagging game because of hooking EndScene
 	if (!show)
 		Sleep(20);
 	*/
-	if (!show)
-		Trigger::StpFlags.STP_GAME_UPDATE = false;
 
 	ImGui_ImplDX9_NewFrame();
 	ImGui_ImplWin32_NewFrame();
@@ -63,7 +73,8 @@ void gui::RenderGUI() noexcept
 
 	if (show)
 	{
-		Trigger::StpFlags.STP_GAME_UPDATE = true;
+		if (usesPause) 
+			Trigger::StpFlags.STP_GAME_UPDATE = true;
 		ImGui::Begin("Mod Menu", NULL, ImGuiWindowFlags_NoCollapse);
 		ImGui::SetNextWindowSize({width, height});
 		ImGuiIO io = ImGui::GetIO();
@@ -91,10 +102,10 @@ void gui::RenderGUI() noexcept
 				{
 					static bool ripperModeEffectSwitch = false;
 					ripperModeEffectSwitch ^= true;
-					if (ripperModeEffectSwitch && !player->m_nRipperModeEnabled)
+					if (ripperModeEffectSwitch)
 						player->CallEffect(100, &player->field_3470);
 					else
-						player->field_3470.SetEffectDuration(0.1f, 0.0f);
+						player->field_3470.Fade(0.1f, 0.0f);
 				}
 				if (ImGui::InputInt("Battle points", &cheat::battlePoints, 100, 500) && g_pPlayerManagerImplement)
 					g_pPlayerManagerImplement->m_nBattlePoints = cheat::battlePoints;
@@ -134,6 +145,11 @@ void gui::RenderGUI() noexcept
 			if (ImGui::BeginTabItem("Menu"))
 			{
 				KeyBind::Hotkey("Menu Key: ", &menuKey);
+				if (ImGui::Checkbox("Pause game when shown", &usesPause))
+				{
+					Trigger::StaFlags.STA_PAUSE = usesPause;
+					Trigger::StpFlags.STP_GAME_UPDATE = usesPause;
+				}
 				if (ImGui::Button("Save Config"))
 				{
 					cheat::SaveConfig();
@@ -166,20 +182,20 @@ void gui::RenderGUI() noexcept
 	ImGui_ImplDX9_RenderDrawData(ImGui::GetDrawData());
 }
 
-// Currently saves only menu hotkey
 void gui::SaveConfig() noexcept
 {
 	CIniReader iniReader("ModMenu.ini");
 
 	iniReader.WriteInteger("Menu", "OpenMenuHotkey", menuKey);
+	iniReader.WriteInteger("Menu", "PauseGameWhenMenu", usesPause);
 }
 
-// Loads only hotkey variable
 void gui::LoadConfig() noexcept
 {
 	CIniReader iniReader("ModMenu.ini");
 
 	menuKey = iniReader.ReadInteger("Menu", "OpenMenuHotkey", 45);
+	usesPause = iniReader.ReadInteger("Menu", "PauseGameWhenMenu", 1) == 1;
 }
 
 // Resets gui variables
@@ -188,4 +204,5 @@ void gui::Reset() noexcept
 	width = 900.0f;
 	height = 600.0f;
 	menuKey = 45;
+	usesPause = true;
 }

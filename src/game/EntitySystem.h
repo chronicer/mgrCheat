@@ -1,11 +1,13 @@
 #pragma once
+#include "Hw.h"
+#include "SceneModelSystem.h"
+#include "Entity.h"
 
-#include "CollisionUserData.h"
-
-class CollisionAttackData : public CollisionUserData
+struct EntitySystem
 {
-public:
-  int field_8;
+  int m_nMaxSize;
+  Hw::cHeapVariable *m_pHeapVariable;
+  SceneModelSystem *m_pSceneModelSystem;
   int field_C;
   int field_10;
   int field_14;
@@ -27,30 +29,7 @@ public:
   int field_54;
   int field_58;
   int field_5C;
-  int field_60;
-  int field_64;
-  int field_68;
-  int field_6C;
-  int field_70;
-  int field_74;
-  int field_78;
-  int field_7C;
-  int field_80;
-  int field_84;
-  int field_88;
-  int field_8C;
-  int field_90;
-  int field_94;
-  int field_98;
-  int field_9C;
-  int field_A0;
-  int field_A4;
-  int field_A8;
-  int field_AC;
-  int field_B0;
-  int field_B4;
-  int field_B8;
-  int field_BC;
+  Hw::cHeapFixed m_HeapFixed;
   int field_C0;
   int field_C4;
   int field_C8;
@@ -71,9 +50,19 @@ public:
   int field_104;
   int field_108;
   int field_10C;
+  int field_110;
+  int field_114;
+  int field_118;
+  int field_11C;
+  int field_120;
+  int field_124;
+  int field_128;
 
-  CollisionAttackData();
-
-  virtual void field_0() override {};
-  virtual ~CollisionAttackData() override {};
+  Entity *ConstructEntity(const char* name, unsigned int index, void *pInfo = nullptr);
+  Entity *ConstructEntity(void *pInfo);
 };
+
+extern EntitySystem &g_EntitySystem;
+
+
+VALIDATE_SIZE(EntitySystem, 0x12C);
