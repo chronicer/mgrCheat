@@ -149,6 +149,9 @@ void gui::RenderGUI() noexcept
 				{
 					Trigger::StaFlags.STA_PAUSE = usesPause;
 					Trigger::StpFlags.STP_GAME_UPDATE = usesPause;
+					Trigger::StpFlags.STP_MOUSE_UPDATE = usesPause;
+					Trigger::StpFlags.STP_PL_CAM_KEY = usesPause;
+					Trigger::StpFlags.STP_PL_ATTACK_KEY = usesPause;
 				}
 				if (ImGui::Button("Save Config"))
 				{
