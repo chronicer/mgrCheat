@@ -649,6 +649,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="ForModders.md" />
+    <None Include="readme.md" />
   </ItemGroup>
 </Project>
