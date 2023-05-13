@@ -221,7 +221,7 @@ void gui::RenderBattleStatsWindow()
 	if (!ShowBattleStats)
 		return;
 
-	ImGuiWindowFlags windowFlags = ImGuiWindowFlags_NoCollapse;
+	ImGuiWindowFlags windowFlags = ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar;
 
 	if (!show)
 		windowFlags |= ImGuiWindowFlags_NoInputs;
