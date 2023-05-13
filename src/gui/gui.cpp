@@ -194,6 +194,7 @@ void gui::SaveConfig() noexcept
 
 	iniReader.WriteInteger("Menu", "OpenMenuHotkey", menuKey);
 	iniReader.WriteInteger("Menu", "PauseGameWhenMenu", usesPause);
+	iniReader.WriteInteger("Menu", "ShowBattleStats", ShowBattleStats);
 }
 
 void gui::LoadConfig() noexcept
@@ -202,6 +203,7 @@ void gui::LoadConfig() noexcept
 
 	menuKey = iniReader.ReadInteger("Menu", "OpenMenuHotkey", 45);
 	usesPause = iniReader.ReadInteger("Menu", "PauseGameWhenMenu", 1) == 1;
+	ShowBattleStats = iniReader.ReadInteger("Menu", "ShowBattleStats", 0) == 1;
 }
 
 // Resets gui variables
@@ -211,6 +213,7 @@ void gui::Reset() noexcept
 	height = 600.0f;
 	menuKey = 45;
 	usesPause = true;
+	ShowBattleStats = false;
 }
 
 void gui::RenderBattleStatsWindow()
