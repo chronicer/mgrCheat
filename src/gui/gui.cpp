@@ -71,6 +71,8 @@ void gui::RenderGUI() noexcept
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
 
+	RenderBattleStatsWindow();
+
 	if (show)
 	{
 		if (usesPause) 
@@ -140,6 +142,7 @@ void gui::RenderGUI() noexcept
 				ImGui::Checkbox("No Damage Status for battle", &cheat::noDamageStat);
 				ImGui::Checkbox("Stealth Cheat", &cheat::stealth);
 				ImGui::Checkbox("Infinite battle/VR timer", &cheat::infTimer);
+				ImGui::Checkbox("Show battle stats", &gui::ShowBattleStats);
 				ImGui::EndTabItem();
 			}
 			if (ImGui::BeginTabItem("Menu"))
@@ -208,4 +211,25 @@ void gui::Reset() noexcept
 	height = 600.0f;
 	menuKey = 45;
 	usesPause = true;
+}
+
+void gui::RenderBattleStatsWindow()
+{
+	if (!ShowBattleStats)
+		return;
+
+	ImGuiWindowFlags windowFlags = ImGuiWindowFlags_NoCollapse;
+
+	if (!show)
+		windowFlags |= ImGuiWindowFlags_NoInputs;
+
+	ImGui::Begin("Battle Stats", NULL, windowFlags);
+	ImGui::LabelText("Alerts", "%d", *(int*)(shared::base + 0x1776174));
+	float fBattleTimer = *(float*)(shared::base + 0x1776204);
+	float fBattleSeconds = fBattleTimer;
+	float fBattleMinutes = fBattleSeconds / 60.0f;
+	ImGui::LabelText("Battle Timer", "%02.0f:%02.0f", floor(fBattleMinutes), fmod(fBattleSeconds, 60.0f));
+	ImGui::LabelText("In Battle", "%s", *(bool*)(shared::base + 0x1777DE0) ? "true" : "false");
+	ImGui::LabelText("Took Damage", "%s", *(bool*)(shared::base + 0x1776218) ? "true" : "false");
+	ImGui::End();
 }
