@@ -228,7 +228,7 @@ void gui::RenderBattleStatsWindow()
 	float fBattleTimer = *(float*)(shared::base + 0x1776204);
 	float fBattleSeconds = fBattleTimer;
 	float fBattleMinutes = fBattleSeconds / 60.0f;
-	ImGui::LabelText("Battle Timer", "%02.0f:%02.0f", floor(fBattleMinutes), fmod(fBattleSeconds, 60.0f));
+	ImGui::LabelText("Battle Timer", "%02.0f:%02.0f", floor(fBattleMinutes), floor(fmod(fBattleSeconds, 60.0f)));
 	ImGui::LabelText("In Battle", "%s", *(bool*)(shared::base + 0x1777DE0) ? "true" : "false");
 	ImGui::LabelText("Took Damage", "%s", *(bool*)(shared::base + 0x1776218) ? "true" : "false");
 	ImGui::End();

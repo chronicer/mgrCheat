@@ -648,4 +648,7 @@
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="ForModders.md" />
+  </ItemGroup>
 </Project>
